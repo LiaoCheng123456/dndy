@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="VideoInTypeMapper">
+    <insert id="addVideoInType" parameterType="MVideoInType">
+        insert into
+        t_video_in_type
+        (id, `videoId`, typeId)
+        values
+        (#{id}, #{videoId}, #{typeId})
+    </insert>
+
+    <update id="modifyVideoInType" parameterType="MVideoInType">
+        update t_video_in_type
+        <trim prefix="set" suffixOverrides=",">
+            <if test="videoId !=null ">`videoId` = #{videoId},</if>
+            <if test="typeId !=null ">`typeId` = #{typeId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="getVideoInType" parameterType="MVideoInType" resultType="MVideoInType">
+        select * from t_video_in_type where id = #{id}
+    </select>
+
+    <select id="getVideoInTypeList" parameterType="MVideoInType" resultType="MVideoInType">
+        select * from t_video_in_type
+        where 1 = 1
+        <if test="videoId != null" >
+            and videoId = #{videoId}
+        </if>
+
+        <if test="typeId != null" >
+            and `typeId` = #{typeId}
+        </if>
+    </select>
+</mapper>

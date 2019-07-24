@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="VideoLinkMapper">
+    <insert id="addVideoLink" parameterType="MVideoLink">
+        insert into
+        t_video_link
+        (id, `videoId`, definition, source, `type`, link, addTime)
+        values
+        (#{id}, #{videoId}, #{definition}, #{source}, #{type}, #{link}, #{addTime})
+    </insert>
+
+    <update id="modifyVideoLink" parameterType="MVideoLink">
+        update t_video_link
+        <trim prefix="set" suffixOverrides=",">
+            <if test="videoId !=null ">`videoId` = #{videoId},</if>
+            <if test="definition !=null ">`definition` = #{definition},</if>
+            <if test="source !=null ">`source` = #{source},</if>
+            <if test="type !=null ">`type` = #{type},</if>
+            <if test="link !=null ">`link` = #{link},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="getVideoLink" parameterType="MVideoLink" resultType="MVideoLink">
+        select * from t_video_link where id = #{id}
+    </select>
+
+    <select id="getVideoLinkList" parameterType="MVideoLink" resultType="MVideoLink">
+        select * from t_video_link
+        where 1 = 1
+        <if test="id != null" >
+            and id = #{id}
+        </if>
+
+        <if test="videoId != null" >
+            and `videoId` = #{videoId}
+        </if>
+
+        <if test="type != null" >
+            and `type` = #{type}
+        </if>
+        order by addTime desc
+    </select>
+</mapper>

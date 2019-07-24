@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="TypeMapper">
+    <insert id="addType" parameterType="MType">
+        insert into
+        t_type
+        (id, `name`, addTime)
+        values
+        (#{id}, #{name}, #{addTime})
+    </insert>
+
+    <update id="modifyType" parameterType="MType">
+        update t_type
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name !=null ">`name` = #{name},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="getType" parameterType="MType" resultType="MType">
+        select * from t_type where id = #{id}
+    </select>
+
+    <select id="getTypeList" parameterType="MType" resultType="MType">
+        select * from t_type
+        where 1 = 1
+        <if test="id != null" >
+            and id = #{id}
+        </if>
+
+        <if test="name != null" >
+            and `name` = #{name}
+        </if>
+        order by addTime desc
+    </select>
+</mapper>

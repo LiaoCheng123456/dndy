@@ -17,6 +17,16 @@ public class MImage implements Serializable {
     // 类型
     private String type;
 
+    private Long addTime;
+
+    public Long getAddTime() {
+        return addTime;
+    }
+
+    public void setAddTime(Long addTime) {
+        this.addTime = addTime;
+    }
+
     public Long getId() {
         return id;
     }

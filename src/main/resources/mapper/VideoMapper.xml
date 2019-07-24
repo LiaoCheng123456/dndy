@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="VideoMapper">
+    <insert id="addVideo" parameterType="MVideo">
+        insert into
+        t_video
+        (id, `name`, nameEng, showTime, scenario, videoTime, videoCoverId,
+        isDelete, isUpdate, clickNumber, isGetCopyright, addTime)
+        values
+        (#{id}, #{name}, #{nameEng}, #{showTime}, #{scenario}, #{videoTime}, #{videoCoverId},
+        0, 0, #{clickNumber}, 0, select UNIX_TIMESTAMP())
+    </insert>
+
+    <update id="modifyVideo" parameterType="MVideo">
+        update t_video
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name !=null ">`name` = #{name},</if>
+            <if test="nameEng !=null ">`nameEng` = #{nameEng},</if>
+            <if test="showTime !=null ">`showTime` = #{showTime},</if>
+            <if test="scenario !=null ">`scenario` = #{scenario},</if>
+            <if test="videoTime !=null ">`videoTime` = #{videoTime},</if>
+            <if test="videoCoverId !=null ">`videoCoverId` = #{videoCoverId},</if>
+            <if test="isDelete !=null ">`isDelete` = #{isDelete},</if>
+            <if test="isUpdate !=null ">`isUpdate` = #{isUpdate},</if>
+            <if test="clickNumber !=null ">`clickNumber` = #{clickNumber},</if>
+            <if test="isGetCopyright !=null ">`isGetCopyright` = #{isGetCopyright},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="getVideo" parameterType="MVideo" resultType="MVideo">
+        select * from t_video where id = #{id}
+    </select>
+
+    <select id="getVideoList" parameterType="MVideo" resultType="MVideo">
+        select * from t_video
+        where isDelete = 0
+        <if test="id != null" >
+            and id = #{id}
+        </if>
+
+        <if test="name != null" >
+            and `name` = #{name}
+        </if>
+        order by addTime desc
+    </select>
+</mapper>

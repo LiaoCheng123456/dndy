@@ -15,7 +15,7 @@ public class MIP implements Serializable {
     private String ip;
 
     // 访问时间
-    private Long time;
+    private Long addTime;
 
     public Long getId() {
         return id;
@@ -33,11 +33,11 @@ public class MIP implements Serializable {
         this.ip = ip;
     }
 
-    public Long getTime() {
-        return time;
+    public Long getAddTime() {
+        return addTime;
     }
 
-    public void setTime(Long time) {
-        this.time = time;
+    public void setAddTime(Long time) {
+        this.addTime = time;
     }
 }

@@ -24,6 +24,16 @@ public class MActor implements Serializable {
     // 国家
     private Long countryId;
 
+    private Long addTime;
+
+    public Long getAddTime() {
+        return addTime;
+    }
+
+    public void setAddTime(Long addTime) {
+        this.addTime = addTime;
+    }
+
     public Long getId() {
         return id;
     }

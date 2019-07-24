@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="VideoRecommendMapper">
+    <insert id="addVideoRecommend" parameterType="MVideoRecommend">
+        insert into
+        t_video_recommend
+        (id, `videoId`, startTime, endTime)
+        values
+        (#{id}, #{videoId}, #{startTime}, #{endTime})
+    </insert>
+
+    <update id="modifyVideoRecommend" parameterType="MVideoRecommend">
+        update t_video_recommend
+        <trim prefix="set" suffixOverrides=",">
+            <if test="videoId !=null ">`videoId` = #{videoId},</if>
+            <if test="startTime !=null ">`startTime` = #{startTime},</if>
+            <if test="endTime !=null ">`endTime` = #{endTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="getVideoRecommend" parameterType="MVideoRecommend" resultType="MVideoRecommend">
+        select * from t_video_recommend where id = #{id}
+    </select>
+
+    <select id="getVideoRecommendList" parameterType="MVideoRecommend" resultType="MVideoRecommend">
+        select * from t_video_recommend
+        where 1 = 1
+        <if test="id != null" >
+            and id = #{id}
+        </if>
+
+        <if test="videoId != null" >
+            and `videoId` = #{videoId}
+        </if>
+
+        <if test="startTime != null" >
+            and `startTime` &lt;= #{startTime}
+        </if>
+
+        <if test="endTime != null" >
+            and `endTime` &gt;= #{endTime}
+        </if>
+    </select>
+</mapper>

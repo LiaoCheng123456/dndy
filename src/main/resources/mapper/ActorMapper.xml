@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ActorMapper">
+    <insert id="addActor" parameterType="MActor">
+        insert into
+        t_actor
+        (id, `name`, nameEng, sex, countryId, addTime)
+        values
+        (#{id}, #{name}, #{nameEng}, #{sex}, #{countryId}, #{addTime})
+    </insert>
+
+    <update id="modifyActor" parameterType="MActor">
+        update t_actor
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name !=null ">`name` = #{name},</if>
+            <if test="nameEng !=null ">`nameEng` = #{nameEng},</if>
+            <if test="sex !=null ">`sex` = #{sex},</if>
+            <if test="countryId !=null ">`countryId` = #{countryId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="getActor" parameterType="MActor" resultType="MActor">
+        select * from t_actor where id = #{id}
+    </select>
+
+    <select id="getActorList" parameterType="MActor" resultType="MActor">
+        select * from t_actor
+        where 1 = 1
+        <if test="id != null" >
+            and id = #{id}
+        </if>
+
+        <if test="name != null" >
+            and `name` = #{name}
+        </if>
+        order by addTime desc
+    </select>
+</mapper>

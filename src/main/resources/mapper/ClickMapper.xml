@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ClickMapper">
+    <insert id="addClick" parameterType="MClick">
+        insert into
+        t_click
+        (id, `clickTime`, videoId)
+        values
+        (#{id}, #{clickTime}, #{videoId})
+    </insert>
+
+    <update id="modifyClick" parameterType="MClick">
+        update t_click
+        <trim prefix="set" suffixOverrides=",">
+            <if test="clickTime !=null ">`clickTime` = #{clickTime},</if>
+            <if test="videoId !=null ">`videoId` = #{videoId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="getClick" parameterType="MClick" resultType="MClick">
+        select * from t_click where id = #{id}
+    </select>
+
+    <select id="getClickList" parameterType="MClick" resultType="MClick">
+        select * from t_click
+        where 1 = 1
+        <if test="id != null" >
+            and id = #{id}
+        </if>
+
+        <if test="videoId != null" >
+            and `videoId` = #{videoId}
+        </if>
+        order by clickTime desc
+    </select>
+</mapper>

@@ -14,6 +14,16 @@ public class MType implements Serializable {
     // 类型名
     private String name;
 
+    private Long addTime;
+
+    public Long getAddTime() {
+        return addTime;
+    }
+
+    public void setAddTime(Long addTime) {
+        this.addTime = addTime;
+    }
+
     public Long getId() {
         return id;
     }

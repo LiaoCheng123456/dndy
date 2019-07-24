@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="VideoInActorMapper">
+    <insert id="addVideoInActor" parameterType="MVideoInActor">
+        insert into
+        t_vidoe_in_actor
+        (id, `videoId`, actorId, sort)
+        values
+        (#{id}, #{videoId}, #{actorId}, #{sort})
+    </insert>
+
+    <update id="modifyVideoInActor" parameterType="MVideoInActor">
+        update t_vidoe_in_actor
+        <trim prefix="set" suffixOverrides=",">
+            <if test="videoId !=null ">`videoId` = #{videoId},</if>
+            <if test="actorId !=null ">`actorId` = #{actorId},</if>
+            <if test="sort !=null ">`sort` = #{sort},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="getVideoInActor" parameterType="MVideoInActor" resultType="MVideoInActor">
+        select * from t_vidoe_in_actor where id = #{id}
+    </select>
+
+    <select id="getVideoInActorList" parameterType="MVideoInActor" resultType="MVideoInActor">
+        select * from t_vidoe_in_actor
+        where 1 = 1
+        <if test="id != null" >
+            and id = #{id}
+        </if>
+
+        <if test="videoId != null" >
+            and `videoId` = #{videoId}
+        </if>
+
+        <if test="actorId != null" >
+            and `actorId` = #{actorId}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="IPMapper">
+    <insert id="addIP" parameterType="MIP">
+        insert into
+        t_ip
+        (id, `ip`, `addTime`)
+        values
+        (#{id}, #{ip}, #{addTime})
+    </insert>
+
+    <update id="modifyIP" parameterType="MIP">
+        update t_ip
+        <trim prefix="set" suffixOverrides=",">
+            <if test="ip !=null ">`ip` = #{ip},</if>
+            <if test="addTime !=null ">`addTime` = #{addTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="getIP" parameterType="MIP" resultType="MIP">
+        select * from t_ip where id = #{id}
+    </select>
+
+    <select id="getIPList" parameterType="MIP" resultType="MIP">
+        select * from t_ip
+        where 1 = 1
+        <if test="id != null" >
+            and id = #{id}
+        </if>
+
+        <if test="ip != null" >
+            and `ip` = #{ip}
+        </if>
+        order by addTime desc
+    </select>
+</mapper>

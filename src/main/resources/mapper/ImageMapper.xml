@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ImageMapper">
+    <insert id="addImage" parameterType="MImage">
+        insert into
+        t_image
+        (id, `url`, `type`, addTime)
+        values
+        (#{id}, #{url}, #{type}, #{addTime})
+    </insert>
+
+    <update id="modifyImage" parameterType="MImage">
+        update t_image
+        <trim prefix="set" suffixOverrides=",">
+            <if test="url !=null ">`url` = #{url},</if>
+            <if test="type !=null ">`type` = #{type},</if>
+            <if test="addTime !=null ">`addTime` = #{addTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="getImage" parameterType="MImage" resultType="MImage">
+        select * from t_image where id = #{id}
+    </select>
+
+    <select id="getImageList" parameterType="MImage" resultType="MImage">
+        select * from t_image
+        where 1 = 1
+        <if test="id != null" >
+            and id = #{id}
+        </if>
+
+        <if test="type != null" >
+            and `type` = #{type}
+        </if>
+        order by addTime desc
+    </select>
+</mapper>
