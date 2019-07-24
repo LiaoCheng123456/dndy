@@ -1,14 +1,13 @@
-package com.sdm.model;
+package com.dndy.model;
 
 import java.io.Serializable;
 
 /**
- * 演员
+ * 国家
  */
-public class MActor implements Serializable {
+public class MCountry implements Serializable {
 
     private static final long serialVersionUID = 6357869213649815390L;
-
     // id
     private Long id;
 
@@ -17,12 +16,6 @@ public class MActor implements Serializable {
 
     // 英文名
     private String nameEng;
-
-    // 性别 男 女
-    private String sex;
-
-    // 国家
-    private Long countryId;
 
     public Long getId() {
         return id;
@@ -46,21 +39,5 @@ public class MActor implements Serializable {
 
     public void setNameEng(String nameEng) {
         this.nameEng = nameEng;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
-    public Long getCountryId() {
-        return countryId;
-    }
-
-    public void setCountryId(Long countryId) {
-        this.countryId = countryId;
     }
 }

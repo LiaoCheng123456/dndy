@@ -1,4 +1,4 @@
-package com.sdm.model;
+package com.dndy.model;
 
 import java.io.Serializable;
 

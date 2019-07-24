@@ -1,4 +1,4 @@
-package com.sdm.service;
+package com.dndy.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;

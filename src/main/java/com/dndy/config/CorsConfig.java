@@ -1,4 +1,4 @@
-package com.sdm.config;
+package com.dndy.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

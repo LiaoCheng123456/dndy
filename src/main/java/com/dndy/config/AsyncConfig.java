@@ -1,4 +1,4 @@
-package com.sdm.config;
+package com.dndy.config;
 
 
 import java.util.concurrent.Executor;
@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;	
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 @Configuration
-@ComponentScan({"com.sdm.service"})
+@ComponentScan({"com.dndy.service"})
 //开始异步支持
 @EnableAsync
 public class AsyncConfig implements AsyncConfigurer{

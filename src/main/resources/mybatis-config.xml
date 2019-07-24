@@ -11,7 +11,7 @@
     </settings>
  
 	<typeAliases>
-		<package name="com.sdm.model"/>
+		<package name="com.dndy.model"/>
 	</typeAliases>
 
 </configuration>
