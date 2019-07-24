@@ -11,22 +11,22 @@ import java.util.List;
 public class VideoImpl extends BaseDao implements IVideoDao {
 
     @Override
-    public Integer addVideo(MVideo pd) {
-        return null;
+    public Integer addVideo(MVideo video) {
+        return sqlSessionTemplate.insert("VideoMapper.addVideo", video);
     }
 
     @Override
-    public Integer modifyVideo(MVideo pd) {
-        return null;
+    public Integer modifyVideo(MVideo video) {
+        return sqlSessionTemplate.update("VideoMapper.modifyVideo", video);
     }
 
     @Override
-    public MVideo getVideo(MVideo pd) {
-        return null;
+    public MVideo getVideo(MVideo video) {
+        return sqlSessionTemplate.selectOne("VideoMapper.getVideo", video);
     }
 
     @Override
-    public List<MVideo> getVideoList(MVideo pd) {
-        return null;
+    public List<MVideo> getVideoList(MVideo video) {
+        return sqlSessionTemplate.selectList("VideoMapper.getVideoList", video);
     }
 }

@@ -11,22 +11,22 @@ import java.util.List;
 public class ImageImpl extends BaseDao implements IImageDao {
 
     @Override
-    public Integer addImage(MImage pd) {
-        return null;
+    public Integer addImage(MImage image) {
+        return sqlSessionTemplate.insert("ImageMapper.addImage", image);
     }
 
     @Override
-    public Integer modifyImage(MImage pd) {
-        return null;
+    public Integer modifyImage(MImage image) {
+        return sqlSessionTemplate.update("ImageMapper.modifyImage", image);
     }
 
     @Override
-    public MImage getImage(MImage pd) {
-        return null;
+    public MImage getImage(MImage image) {
+        return sqlSessionTemplate.selectOne("ImageMapper.getImage", image);
     }
 
     @Override
-    public List<MImage> getImageList(MImage pd) {
-        return null;
+    public List<MImage> getImageList(MImage image) {
+        return sqlSessionTemplate.selectList("ImageMapper.getImageList", image);
     }
 }

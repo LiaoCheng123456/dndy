@@ -11,22 +11,22 @@ import java.util.List;
 public class ClickImpl extends BaseDao implements IClickDao {
 
     @Override
-    public Integer addClick(MClick pd) {
-        return null;
+    public Integer addClick(MClick click) {
+        return sqlSessionTemplate.insert("ClickMapper.addClick", click);
     }
 
     @Override
-    public Integer modifyClick(MClick pd) {
-        return null;
+    public Integer modifyClick(MClick click) {
+        return sqlSessionTemplate.update("ClickMapper.modifyClick", click);
     }
 
     @Override
-    public MClick getClick(MClick pd) {
-        return null;
+    public MClick getClick(MClick click) {
+        return sqlSessionTemplate.selectOne("ActorMapper.getClick", click);
     }
 
     @Override
-    public List<MClick> getClickList(MClick pd) {
-        return null;
+    public List<MClick> getClickList(MClick click) {
+        return sqlSessionTemplate.selectList("ActorMapper.getClickList", click);
     }
 }

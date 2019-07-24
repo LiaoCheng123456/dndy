@@ -11,22 +11,22 @@ import java.util.List;
 public class CountryImpl extends BaseDao implements ICountryDao {
 
     @Override
-    public Integer addCountry(MCountry pd) {
-        return null;
+    public Integer addCountry(MCountry country) {
+        return sqlSessionTemplate.insert("CountryMapper.addCountry", country);
     }
 
     @Override
-    public Integer modifyCountry(MCountry pd) {
-        return null;
+    public Integer modifyCountry(MCountry country) {
+        return sqlSessionTemplate.update("CountryMapper.modifyCountry", country);
     }
 
     @Override
-    public MCountry getCountry(MCountry pd) {
-        return null;
+    public MCountry getCountry(MCountry country) {
+        return sqlSessionTemplate.selectOne("CountryMapper.getCountry", country);
     }
 
     @Override
-    public List<MCountry> getCountryList(MCountry pd) {
-        return null;
+    public List<MCountry> getCountryList(MCountry country) {
+        return sqlSessionTemplate.selectOne("CountryMapper.getCountryList", country);
     }
 }

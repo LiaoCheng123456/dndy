@@ -11,22 +11,22 @@ import java.util.List;
 public class TypeImpl extends BaseDao implements ITypeDao {
 
     @Override
-    public Integer addType(MType pd) {
-        return null;
+    public Integer addType(MType type) {
+        return sqlSessionTemplate.insert("TypeMapper.addType", type);
     }
 
     @Override
-    public Integer modifyType(MType pd) {
-        return null;
+    public Integer modifyType(MType type) {
+        return sqlSessionTemplate.update("TypeMapper.modifyType", type);
     }
 
     @Override
-    public MType getType(MType pd) {
-        return null;
+    public MType getType(MType type) {
+        return sqlSessionTemplate.selectOne("TypeMapper.getType", type);
     }
 
     @Override
-    public List<MType> getTypeList(MType pd) {
-        return null;
+    public List<MType> getTypeList(MType type) {
+        return sqlSessionTemplate.selectList("TypeMapper.getTypeList", type);
     }
 }

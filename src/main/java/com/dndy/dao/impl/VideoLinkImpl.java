@@ -11,22 +11,22 @@ import java.util.List;
 public class VideoLinkImpl extends BaseDao implements IVideoLinkDao {
 
     @Override
-    public Integer addVideoLink(MVideoLink pd) {
-        return null;
+    public Integer addVideoLink(MVideoLink videoLink) {
+        return sqlSessionTemplate.insert("VideoLinkMapper.addVideoLink", videoLink);
     }
 
     @Override
-    public Integer modifyVideoLink(MVideoLink pd) {
-        return null;
+    public Integer modifyVideoLink(MVideoLink videoLink) {
+        return sqlSessionTemplate.update("VideoLinkMapper.modifyVideoLink", videoLink);
     }
 
     @Override
-    public MVideoLink getVideoLink(MVideoLink pd) {
-        return null;
+    public MVideoLink getVideoLink(MVideoLink videoLink) {
+        return sqlSessionTemplate.selectOne("VideoLinkMapper.getVideoLink", videoLink);
     }
 
     @Override
-    public List<MVideoLink> getVideoLinkList(MVideoLink pd) {
-        return null;
+    public List<MVideoLink> getVideoLinkList(MVideoLink videoLink) {
+        return sqlSessionTemplate.selectList("VideoLinkMapper.getVideoLinkList", videoLink);
     }
 }

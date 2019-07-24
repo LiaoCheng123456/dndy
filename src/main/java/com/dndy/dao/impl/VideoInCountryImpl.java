@@ -11,22 +11,22 @@ import java.util.List;
 public class VideoInCountryImpl extends BaseDao implements IVideoInCountryDao {
 
     @Override
-    public Integer addVideoInCountry(MVideoInCountry pd) {
-        return null;
+    public Integer addVideoInCountry(MVideoInCountry videoInCountry) {
+        return sqlSessionTemplate.insert("VideoInCountryMapper.addVideoInCountry", videoInCountry);
     }
 
     @Override
-    public Integer modifyVideoInCountry(MVideoInCountry pd) {
-        return null;
+    public Integer modifyVideoInCountry(MVideoInCountry videoInCountry) {
+        return sqlSessionTemplate.update("VideoInCountryMapper.modifyVideoInCountry", videoInCountry);
     }
 
     @Override
-    public MVideoInCountry getVideoInCountry(MVideoInCountry pd) {
-        return null;
+    public MVideoInCountry getVideoInCountry(MVideoInCountry videoInCountry) {
+        return sqlSessionTemplate.selectOne("VideoInCountryMapper.getVideoInCountry", videoInCountry);
     }
 
     @Override
-    public List<MVideoInCountry> getVideoInCountryList(MVideoInCountry pd) {
-        return null;
+    public List<MVideoInCountry> getVideoInCountryList(MVideoInCountry videoInCountry) {
+        return sqlSessionTemplate.selectList("VideoInCountryMapper.getVideoInCountryList", videoInCountry);
     }
 }

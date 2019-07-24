@@ -11,22 +11,22 @@ import java.util.List;
 public class ActorImpl extends BaseDao implements IActorDao {
 
     @Override
-    public Integer addActor(MActor pd) {
-        return null;
+    public Integer addActor(MActor actor) {
+        return sqlSessionTemplate.insert("ActorMapper.addActor", actor);
     }
 
     @Override
-    public Integer modifyActor(MActor pd) {
-        return null;
+    public Integer modifyActor(MActor actor) {
+        return sqlSessionTemplate.update("ActorMapper.modifyActor", actor);
     }
 
     @Override
-    public MActor getActor(MActor pd) {
-        return null;
+    public MActor getActor(MActor actor) {
+        return sqlSessionTemplate.selectOne("ActorMapper.getActor", actor);
     }
 
     @Override
-    public List<MActor> getActorList(MActor pd) {
-        return null;
+    public List<MActor> getActorList(MActor actor) {
+        return sqlSessionTemplate.selectList("ActorMapper.getActorList", actor);
     }
 }
