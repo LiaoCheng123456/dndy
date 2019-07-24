@@ -13,8 +13,6 @@ import java.util.Date;
 
 /**
  * 基础service类
- *
- * @author rex
  */
 public class BaseService {
 

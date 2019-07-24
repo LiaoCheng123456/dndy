@@ -7,8 +7,6 @@ import java.io.Serializable;
 
 /**
  * 基础控制类
- * 
- * @author rex
  */
 public class BaseController implements Serializable {
 
