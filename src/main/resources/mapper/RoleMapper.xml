@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="RoleMapper">
+    <insert id="addRole" parameterType="PageData">
+        insert into
+        t_role
+        (id, roleName, isAdmin,  `desc`, addBy, updateTime, addTime)
+        values
+        (#{id}, #{roleName}, #{isAdmin}, #{desc}, #{addBy}, #{updateTime}, #{addTime})
+    </insert>
+
+    <update id="modifyRole" parameterType="PageData">
+        update t_role
+        <trim prefix="set" suffixOverrides=",">
+            <if test="id !=null ">id = #{id},</if>
+            <if test="roleName !=null ">roleName = #{roleName},</if>
+            <if test="desc !=null ">`desc` = #{desc},</if>
+            <if test="updateTime !=null ">updateTime = #{updateTime},</if>
+            <if test="isAdmin !=null ">isAdmin = #{isAdmin},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="getRole" parameterType="PageData" resultType="PageData">
+        select id, roleName,isAdmin, `desc`, addBy, updateTime, addTime
+        from t_role
+        where 1 = 1
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="roleName != null">
+            and roleName = #{roleName}
+        </if>
+    </select>
+
+    <select id="getRoleList" parameterType="PageData" resultType="PageData">
+        select id, roleName,isAdmin, `desc`, addBy, updateTime, addTime
+        from t_role
+        where 1 = 1
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="roleName != null">
+            and roleName = #{roleName}
+        </if>
+        <if test="keyword != null">
+            and (roleName like "%"#{keyword}"%" or `desc` like "%"#{keyword}"%")
+        </if>
+        <if test="startTime != null">
+            and addTime &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            and addTime &lt;= #{endTime}
+        </if>
+        order by addTime desc
+        <if test="start != null and limit != null"> limit #{start}, #{limit}</if>
+
+    </select>
+
+    <delete id="deleteRole" parameterType="PageData">
+        delete from t_role where id = #{id}
+    </delete>
+</mapper>

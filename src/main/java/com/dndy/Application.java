@@ -1,7 +1,9 @@
 package com.dndy;
 
+import com.dndy.model.Secret;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @SpringBootApplication
 @EnableTransactionManagement
+@EnableConfigurationProperties({Secret.class})
 @ServletComponentScan
 public class Application {
 	

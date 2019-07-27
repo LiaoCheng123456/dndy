@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="PermissionMapper">
+    <insert id="addPermission" parameterType="PageData">
+        insert into
+        t_permission
+        (id, pid, `name`, `desc`, `value`,isValid, addBy, updateTime, addTime)
+        values
+        (#{id}, #{pid}, #{name}, #{desc}, #{value}, 1, #{addBy}, #{updateTime}, #{addTime})
+    </insert>
+
+    <update id="modifyPermission" parameterType="PageData">
+        update t_permission
+        <trim prefix="set" suffixOverrides=",">
+            <if test="pid !=null ">pid = #{pid},</if>
+            <if test="name !=null ">`name` = #{name},</if>
+            <if test="desc !=null ">`desc` = #{desc},</if>
+            <if test="value !=null ">`value` = #{value},</if>
+            <if test="isValid !=null ">`isValid` = #{isValid},</if>
+            <if test="updateTime !=null ">`updateTime` = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="getPermission" parameterType="PageData" resultType="PageData">
+        select id, pid, `name`, `desc`, `value`,isValid, addBy, updateTime, addTime
+        from t_permission
+        where 1 = 1
+        <if test="exclude  != null ">
+            and isValid = #{exclude}
+        </if>
+
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="name != null">
+            and `name` = #{name}
+        </if>
+    </select>
+
+    <select id="getPermissionList" parameterType="PageData" resultType="PageData">
+        select id, pid, `name`, `desc`, `value`,isValid, addBy, updateTime, addTime
+        from t_permission
+        where 1 = 1
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="name != null">
+            and `name` = #{name}
+        </if>
+        <if test="pid != null">
+            and `pid` = #{pid}
+        </if>
+        <if test="value != null">
+            and `value` = #{value}
+        </if>
+        <if test="exclude  != null ">
+            and isValid = #{exclude}
+        </if>
+        <if test="isValid != null">
+            and `isValid` = #{isValid}
+        </if>
+        <if test="keyword != null">
+            and (`name` like "%"#{keyword}"%" or `value` like "%"#{keyword}"%")
+        </if>
+        <if test="startTime != null">
+            and addTime &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            and addTime &lt;= #{endTime}
+        </if>
+        order by addTime desc
+        <if test="start != null and limit != null"> limit #{start}, #{limit}</if>
+
+    </select>
+
+    <delete id="deletePermission" parameterType="PageData">
+        delete from t_permission where id = #{id}
+    </delete>
+</mapper>

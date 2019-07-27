@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="RoleInPermissionMapper">
+    <insert id="addRoleInPermission" parameterType="PageData">
+        insert into
+        t_role_in_permission
+        (roleId, permissionId)
+        values
+        (#{roleId}, #{permissionId})
+    </insert>
+
+    <select id="getRoleInPermissionList" parameterType="PageData" resultType="PageData">
+        select roleId, permissionId
+        from t_role_in_permission
+        where 1 = 1
+        <if test="roleId != null">
+            and roleId = #{roleId}
+        </if>
+        <if test="permissionId != null">
+            and permissionId = #{permissionId}
+        </if>
+    </select>
+
+    <delete id="deleteRoleInPermission" parameterType="PageData">
+        delete from t_role_in_permission where 1 = 1
+        <if test="roleId != null">
+            and roleId = #{roleId}
+        </if>
+        <if test="permissionId != null">
+            and permissionId = #{permissionId}
+        </if>
+    </delete>
+</mapper>

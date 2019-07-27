@@ -1,6 +1,6 @@
 spring:
     datasource:
-        url: jdbc:mysql://192.168.0.220:3306/dndy?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
+        url: jdbc:mysql://localhost:3306/dndy?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
         #url: jdbc:mysql://223.247.212.56:3306/saxd?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
         username: root
         password: root
@@ -30,7 +30,7 @@ spring:
 
 mybatis:
     mapperLocations: classpath:mapper/*.xml
-    typeAliasesPackage: com.sdm.model
+    typeAliasesPackage: com.dndy.model
     configuration:
       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 server:
