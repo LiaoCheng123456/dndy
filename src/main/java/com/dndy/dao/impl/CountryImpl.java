@@ -2,7 +2,7 @@ package com.dndy.dao.impl;
 
 import com.dndy.dao.BaseDao;
 import com.dndy.dao.ICountryDao;
-import com.dndy.model.MCountry;
+import com.dndy.model.PageData;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,22 +11,22 @@ import java.util.List;
 public class CountryImpl extends BaseDao implements ICountryDao {
 
     @Override
-    public Integer addCountry(MCountry country) {
+    public Integer addCountry(PageData country) {
         return sqlSessionTemplate.insert("CountryMapper.addCountry", country);
     }
 
     @Override
-    public Integer modifyCountry(MCountry country) {
+    public Integer modifyCountry(PageData country) {
         return sqlSessionTemplate.update("CountryMapper.modifyCountry", country);
     }
 
     @Override
-    public MCountry getCountry(MCountry country) {
+    public PageData getCountry(PageData country) {
         return sqlSessionTemplate.selectOne("CountryMapper.getCountry", country);
     }
 
     @Override
-    public List<MCountry> getCountryList(MCountry country) {
+    public List<PageData> getCountryList(PageData country) {
         return sqlSessionTemplate.selectOne("CountryMapper.getCountryList", country);
     }
 }

@@ -1,6 +1,6 @@
 package com.dndy.dao;
 
-import com.dndy.model.MCountry;
+import com.dndy.model.PageData;
 
 import java.util.List;
 
@@ -11,20 +11,20 @@ public interface ICountryDao {
     /**
      * 添加国家
      */
-    Integer addCountry(MCountry pd);
+    Integer addCountry(PageData pd);
 
     /**
      * 编辑国家
      */
-    Integer modifyCountry(MCountry pd);
+    Integer modifyCountry(PageData pd);
 
     /**
      * 查询单个国家
      */
-    MCountry getCountry(MCountry pd);
+    PageData getCountry(PageData pd);
 
     /**
      * 查询多个国家
      */
-    List<MCountry> getCountryList(MCountry pd);
+    List<PageData> getCountryList(PageData pd);
 }

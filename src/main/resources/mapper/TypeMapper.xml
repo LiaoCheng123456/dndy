@@ -6,9 +6,9 @@
     <insert id="addType" parameterType="PageData">
         insert into
         t_type
-        (id, `name`, updateTime, addBy, addTime)
+        (id, `name`,idDelete,  updateTime, addBy, addTime)
         values
-        (#{id}, #{name}, #{updateTime}, #{addBy}, #{addTime})
+        (#{id}, #{name}, 0, #{updateTime}, #{addBy}, #{addTime})
     </insert>
 
     <update id="modifyType" parameterType="PageData">
@@ -16,17 +16,18 @@
         <trim prefix="set" suffixOverrides=",">
             <if test="name !=null ">`name` = #{name},</if>
             <if test="updateTime !=null ">`updateTime` = #{updateTime},</if>
+            <if test="idDelete !=null ">`idDelete` = #{idDelete},</if>
         </trim>
         where id = #{id}
     </update>
 
     <select id="getType" parameterType="PageData" resultType="PageData">
-        select * from t_type where id = #{id}
+        select * from t_type where id = #{id} and idDelete = 0
     </select>
 
     <select id="getTypeList" parameterType="PageData" resultType="PageData">
         select * from t_type
-        where 1 = 1
+        where 1 = 1 and idDelete = 0
         <if test="id != null" >
             and id = #{id}
         </if>

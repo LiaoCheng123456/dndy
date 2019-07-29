@@ -1,6 +1,6 @@
 package com.dndy.service;
 
-import com.dndy.dao.ITypeDao;
+import com.dndy.dao.ICountryDao;
 import com.dndy.model.PageData;
 import com.dndy.util.LogUtils;
 import com.dndy.util.ParameterUtils;
@@ -11,16 +11,16 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
 
-@Service(value = "videoTypeService")
-public class VideoTypeService extends BaseService{
+@Service(value = "countryService")
+public class CountryService extends BaseService{
 
-    @Resource(name = "typeImpl")
-    private ITypeDao typeDao;
+    @Resource(name = "countryImpl")
+    private ICountryDao countryImpl;
 
     /**
-     * 添加视频类型
+     * 添加国家
      */
-    public String addType(String param) {
+    public String addCountry(String param) {
         WSPResult wspResult = new WSPResult();
         PageData pd = json.parseObject(param, PageData.class);
         try{
@@ -32,27 +32,27 @@ public class VideoTypeService extends BaseService{
             // 检查名称是否重复
             PageData nameExists = new PageData();
             nameExists.put("name", pd.get("name"));
-            PageData TypeBySchool = typeDao.getType(nameExists);
-            if (TypeBySchool != null) {
-                return LogUtils.error(this.getClass().getSimpleName(), "addType", param, "视频类型名重复", null);
+            PageData CountryBySchool = countryImpl.getCountry(nameExists);
+            if (CountryBySchool != null) {
+                return LogUtils.error(this.getClass().getSimpleName(), "addCountry", param, "国家名重复", null);
             }
 
             pd.put("id", getLongID());
             pd.put("addBy", pd.get("uid"));
             pd.put("updateTime", WSPDate.getCurrentTimestemp());
             pd.put("addTime", WSPDate.getCurrentTimestemp());
-            typeDao.addType(pd);
+            countryImpl.addCountry(pd);
             wspResult.setData(pd.get("id"));
         } catch (Exception e) {
-            return LogUtils.error(this.getClass().getSimpleName(), "addType", param, "添加视频类型失败", e);
+            return LogUtils.error(this.getClass().getSimpleName(), "addCountry", param, "添加国家失败", e);
         }
         return json.toJSONString(wspResult);
     }
 
     /**
-     * 修改视频类型
+     * 修改国家
      */
-    public String modifyType(String param) {
+    public String modifyCountry(String param) {
         WSPResult wspResult = new WSPResult();
         PageData pd = json.parseObject(param, PageData.class);
         try{
@@ -64,31 +64,31 @@ public class VideoTypeService extends BaseService{
             // 检查类型是否存在
             PageData sc = new PageData();
             sc.put("id", pd.get("id"));
-            PageData TypeInfo = typeDao.getType(sc);
-            if (TypeInfo == null) {
-                return LogUtils.error(this.getClass().getSimpleName(), "modifyType", param, "视频类型不存在", null);
+            PageData CountryInfo = countryImpl.getCountry(sc);
+            if (CountryInfo == null) {
+                return LogUtils.error(this.getClass().getSimpleName(), "modifyCountry", param, "国家不存在", null);
             }
 
             // 检查名称是否重复
             PageData nameExists = new PageData();
             nameExists.put("name", pd.get("name"));
-            PageData TypeBySchool = typeDao.getType(nameExists);
-            if (TypeBySchool != null && !TypeBySchool.get("id").equals(pd.get("id"))) {
-                return LogUtils.error(this.getClass().getSimpleName(), "modifyType", param, "视频类型名重复", null);
+            PageData CountryBySchool = countryImpl.getCountry(nameExists);
+            if (CountryBySchool != null && !CountryBySchool.get("id").equals(pd.get("id"))) {
+                return LogUtils.error(this.getClass().getSimpleName(), "modifyCountry", param, "国家名重复", null);
             }
 
             pd.put("updateTime", WSPDate.getCurrentTimestemp());
-            typeDao.modifyType(pd);
+            countryImpl.modifyCountry(pd);
         } catch (Exception e) {
-            return LogUtils.error(this.getClass().getSimpleName(), "modifyType", param, "修改视频类型失败", e);
+            return LogUtils.error(this.getClass().getSimpleName(), "modifyCountry", param, "修改国家失败", e);
         }
         return json.toJSONString(wspResult);
     }
 
     /**
-     * 获取视频类型详情
+     * 获取国家详情
      */
-    public String getType(String param) {
+    public String getCountry(String param) {
         WSPResult wspResult = new WSPResult();
         PageData pd = json.parseObject(param, PageData.class);
         try{
@@ -96,18 +96,18 @@ public class VideoTypeService extends BaseService{
             if (result != null) {
                 return result;
             }
-            PageData Type = typeDao.getType(pd);
-            wspResult.setData(Type);
+            PageData Country = countryImpl.getCountry(pd);
+            wspResult.setData(Country);
         } catch (Exception e) {
-            return LogUtils.error(this.getClass().getSimpleName(), "getType", param, "获取视频类型详情失败", e);
+            return LogUtils.error(this.getClass().getSimpleName(), "getCountry", param, "获取国家详情失败", e);
         }
         return json.toJSONString(wspResult);
     }
 
     /**
-     * 获取视频类型列表
+     * 获取国家列表
      */
-    public String getTypeList(String param) {
+    public String getCountryList(String param) {
         WSPResult wspResult = new WSPResult();
         PageData pd = json.parseObject(param, PageData.class);
         try{
@@ -118,18 +118,18 @@ public class VideoTypeService extends BaseService{
 //
 //            PageData school = new PageData();
 //            school.put("schoolId", pd.get("schoolId"));
-            List<PageData> TypeBySchool = typeDao.getTypeList(pd);
-            wspResult.setData(TypeBySchool);
+            List<PageData> CountryBySchool = countryImpl.getCountryList(pd);
+            wspResult.setData(CountryBySchool);
         } catch (Exception e) {
-            return LogUtils.error(this.getClass().getSimpleName(), "getTypeList", param, "获取视频类型列表失败", e);
+            return LogUtils.error(this.getClass().getSimpleName(), "getCountryList", param, "获取国家列表失败", e);
         }
         return json.toJSONString(wspResult);
     }
 
     /**
-     * 删除视频类型
+     * 删除国家
      */
-    public String deleteType(String param) {
+    public String deleteCountry(String param) {
         WSPResult wspResult = new WSPResult();
         PageData pd = json.parseObject(param, PageData.class);
         try{
@@ -138,9 +138,9 @@ public class VideoTypeService extends BaseService{
                 return result;
             }
             pd.put("idDelete", 1);
-            typeDao.modifyType(pd);
+            countryImpl.modifyCountry(pd);
         } catch (Exception e) {
-            return LogUtils.error(this.getClass().getSimpleName(), "deleteType", param, "删除视频类型失败", e);
+            return LogUtils.error(this.getClass().getSimpleName(), "deleteCountry", param, "删除国家失败", e);
         }
         return json.toJSONString(wspResult);
     }
