@@ -3,27 +3,28 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="TypeMapper">
-    <insert id="addType" parameterType="MType">
+    <insert id="addType" parameterType="PageData">
         insert into
         t_type
-        (id, `name`, addTime)
+        (id, `name`, updateTime, addBy, addTime)
         values
-        (#{id}, #{name}, #{addTime})
+        (#{id}, #{name}, #{updateTime}, #{addBy}, #{addTime})
     </insert>
 
-    <update id="modifyType" parameterType="MType">
+    <update id="modifyType" parameterType="PageData">
         update t_type
         <trim prefix="set" suffixOverrides=",">
             <if test="name !=null ">`name` = #{name},</if>
+            <if test="updateTime !=null ">`updateTime` = #{updateTime},</if>
         </trim>
         where id = #{id}
     </update>
 
-    <select id="getType" parameterType="MType" resultType="MType">
+    <select id="getType" parameterType="PageData" resultType="PageData">
         select * from t_type where id = #{id}
     </select>
 
-    <select id="getTypeList" parameterType="MType" resultType="MType">
+    <select id="getTypeList" parameterType="PageData" resultType="PageData">
         select * from t_type
         where 1 = 1
         <if test="id != null" >

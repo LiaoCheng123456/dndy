@@ -1,6 +1,6 @@
 package com.dndy.dao;
 
-import com.dndy.model.MType;
+import com.dndy.model.PageData;
 
 import java.util.List;
 
@@ -11,20 +11,20 @@ public interface ITypeDao {
     /**
      * 添加视频类型
      */
-    Integer addType(MType pd);
+    Integer addType(PageData pd);
 
     /**
      * 编辑视频类型
      */
-    Integer modifyType(MType pd);
+    Integer modifyType(PageData pd);
 
     /**
      * 查询单个视频类型
      */
-    MType getType(MType pd);
+    PageData getType(PageData pd);
 
     /**
      * 查询多个视频类型
      */
-    List<MType> getTypeList(MType pd);
+    List<PageData> getTypeList(PageData pd);
 }
