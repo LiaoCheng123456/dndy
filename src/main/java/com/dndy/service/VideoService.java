@@ -1,4 +1,4 @@
-package com.dndy.service.video;
+package com.dndy.service;
 
 import com.dndy.dao.IVideoDao;
 import com.dndy.model.DataResult;

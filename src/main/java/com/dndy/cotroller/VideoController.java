@@ -1,8 +1,7 @@
-package com.dndy.cotroller.video;
+package com.dndy.cotroller;
 
-import com.dndy.cotroller.BaseController;
 import com.dndy.model.MVideo;
-import com.dndy.service.video.VideoService;
+import com.dndy.service.VideoService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

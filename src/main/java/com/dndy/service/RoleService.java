@@ -1,4 +1,4 @@
-package com.dndy.service.user;
+package com.dndy.service;
 
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.dndy.dao.*;

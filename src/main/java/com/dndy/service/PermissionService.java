@@ -1,4 +1,4 @@
-package com.dndy.service.user;
+package com.dndy.service;
 
 import com.dndy.dao.IPermissionDao;
 import com.dndy.model.PageData;

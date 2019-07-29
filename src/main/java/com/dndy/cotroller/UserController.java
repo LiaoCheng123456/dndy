@@ -1,9 +1,8 @@
-package com.dndy.cotroller.user;
+package com.dndy.cotroller;
 
-import com.dndy.cotroller.BaseController;
 import com.dndy.interceptor.AuthJwt;
 import com.dndy.model.PageData;
-import com.dndy.service.user.UserService;
+import com.dndy.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
