@@ -1,6 +1,7 @@
 package com.dndy.util;
 
 import com.alibaba.fastjson.JSON;
+import com.dndy.model.DataResult;
 import com.wsp.core.WSPResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

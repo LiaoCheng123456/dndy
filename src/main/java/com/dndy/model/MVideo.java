@@ -1,6 +1,8 @@
 package com.dndy.model;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * 基础bese
@@ -18,13 +20,13 @@ public class MVideo implements Serializable {
     private String nameEng;
 
     // 上映时间
-    private Long showTime;
+    private String showTime;
 
     // 剧情介绍
     private String scenario;
 
     // 电影时长
-    private Long videoTime;
+    private String videoTime;
 
     // 电影封面图片
     private Long videoCoverId;
@@ -42,7 +44,72 @@ public class MVideo implements Serializable {
     private Integer isGetCopyright;
 
     // 电影上架时间
-    private Long addTime;
+    private int addTime;
+
+    // 修改时间
+    private int updateTime;
+
+    // 添加人
+    private Long addBy;
+
+    // 类型
+    private Long typeId;
+
+    // 国家
+    private Long countryId;
+
+    // 视频相关信息
+    private List<Object>  imageList;
+
+    private MVideoLink videoLink;
+
+    public MVideoLink getVideoLink() {
+        return videoLink;
+    }
+
+    public void setVideoLink(MVideoLink videoLink) {
+        this.videoLink = videoLink;
+    }
+
+    public List<Object> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<Object> imageList) {
+        this.imageList = imageList;
+    }
+
+    public int getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(int updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public Long getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(Long typeId) {
+        this.typeId = typeId;
+    }
+
+    public Long getCountryId() {
+        return countryId;
+    }
+
+    public void setCountryId(Long countryId) {
+        this.countryId = countryId;
+    }
+
+    public Long getAddBy() {
+        return addBy;
+    }
+
+    public void setAddBy(Long addBy) {
+        this.addBy = addBy;
+    }
 
     public Long getId() {
         return id;
@@ -68,28 +135,12 @@ public class MVideo implements Serializable {
         this.nameEng = nameEng;
     }
 
-    public Long getShowTime() {
-        return showTime;
-    }
-
-    public void setShowTime(Long showTime) {
-        this.showTime = showTime;
-    }
-
     public String getScenario() {
         return scenario;
     }
 
     public void setScenario(String scenario) {
         this.scenario = scenario;
-    }
-
-    public Long getVideoTime() {
-        return videoTime;
-    }
-
-    public void setVideoTime(Long videoTime) {
-        this.videoTime = videoTime;
     }
 
     public Long getVideoCoverId() {
@@ -132,11 +183,27 @@ public class MVideo implements Serializable {
         this.isGetCopyright = isGetCopyright;
     }
 
-    public Long getAddTime() {
+    public String getShowTime() {
+        return showTime;
+    }
+
+    public void setShowTime(String showTime) {
+        this.showTime = showTime;
+    }
+
+    public String getVideoTime() {
+        return videoTime;
+    }
+
+    public void setVideoTime(String videoTime) {
+        this.videoTime = videoTime;
+    }
+
+    public int getAddTime() {
         return addTime;
     }
 
-    public void setAddTime(Long addTime) {
+    public void setAddTime(int addTime) {
         this.addTime = addTime;
     }
 }

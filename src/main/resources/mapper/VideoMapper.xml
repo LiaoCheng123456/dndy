@@ -7,10 +7,10 @@
         insert into
         t_video
         (id, `name`, nameEng, showTime, scenario, videoTime, videoCoverId,
-        isDelete, isUpdate, clickNumber, isGetCopyright, addTime)
+        isDelete, isUpdate, clickNumber, isGetCopyright, addTime,updateTime, addBy)
         values
         (#{id}, #{name}, #{nameEng}, #{showTime}, #{scenario}, #{videoTime}, #{videoCoverId},
-        0, 0, #{clickNumber}, 0, select UNIX_TIMESTAMP())
+        0, 0, #{clickNumber}, 0, #{addTime},#{updateTime}, #{addBy})
     </insert>
 
     <update id="modifyVideo" parameterType="MVideo">
@@ -25,6 +25,7 @@
             <if test="isDelete !=null ">`isDelete` = #{isDelete},</if>
             <if test="isUpdate !=null ">`isUpdate` = #{isUpdate},</if>
             <if test="clickNumber !=null ">`clickNumber` = #{clickNumber},</if>
+            <if test="updateTime !=null ">`updateTime` = #{updateTime},</if>
             <if test="isGetCopyright !=null ">`isGetCopyright` = #{isGetCopyright},</if>
         </trim>
         where id = #{id}
