@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="VideoMapper">
-    <insert id="addVideo" parameterType="MVideo">
+    <insert id="addVideo" parameterType="PageData">
         insert into
         t_video
         (id, `name`, nameEng, showTime, scenario, videoTime, videoCoverId,
@@ -13,7 +13,7 @@
         0, 0, #{clickNumber}, 0, #{addTime},#{updateTime}, #{addBy})
     </insert>
 
-    <update id="modifyVideo" parameterType="MVideo">
+    <update id="modifyVideo" parameterType="PageData">
         update t_video
         <trim prefix="set" suffixOverrides=",">
             <if test="name !=null ">`name` = #{name},</if>
@@ -31,11 +31,11 @@
         where id = #{id}
     </update>
 
-    <select id="getVideo" parameterType="MVideo" resultType="MVideo">
+    <select id="getVideo" parameterType="PageData" resultType="PageData">
         select * from t_video where id = #{id}
     </select>
 
-    <select id="getVideoList" parameterType="MVideo" resultType="MVideo">
+    <select id="getVideoList" parameterType="PageData" resultType="PageData">
         select * from t_video
         where isDelete = 0
         <if test="id != null" >

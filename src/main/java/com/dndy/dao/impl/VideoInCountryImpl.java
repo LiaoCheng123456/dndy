@@ -2,7 +2,7 @@ package com.dndy.dao.impl;
 
 import com.dndy.dao.BaseDao;
 import com.dndy.dao.IVideoInCountryDao;
-import com.dndy.model.MVideoInCountry;
+import com.dndy.model.PageData;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,22 +11,22 @@ import java.util.List;
 public class VideoInCountryImpl extends BaseDao implements IVideoInCountryDao {
 
     @Override
-    public Integer addVideoInCountry(MVideoInCountry videoInCountry) {
+    public Integer addVideoInCountry(PageData videoInCountry) {
         return sqlSessionTemplate.insert("VideoInCountryMapper.addVideoInCountry", videoInCountry);
     }
 
     @Override
-    public Integer modifyVideoInCountry(MVideoInCountry videoInCountry) {
+    public Integer modifyVideoInCountry(PageData videoInCountry) {
         return sqlSessionTemplate.update("VideoInCountryMapper.modifyVideoInCountry", videoInCountry);
     }
 
     @Override
-    public MVideoInCountry getVideoInCountry(MVideoInCountry videoInCountry) {
+    public PageData getVideoInCountry(PageData videoInCountry) {
         return sqlSessionTemplate.selectOne("VideoInCountryMapper.getVideoInCountry", videoInCountry);
     }
 
     @Override
-    public List<MVideoInCountry> getVideoInCountryList(MVideoInCountry videoInCountry) {
+    public List<PageData> getVideoInCountryList(PageData videoInCountry) {
         return sqlSessionTemplate.selectList("VideoInCountryMapper.getVideoInCountryList", videoInCountry);
     }
 }

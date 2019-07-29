@@ -1,30 +1,30 @@
 package com.dndy.dao;
 
-import com.dndy.model.MVideoInCountry;
+import com.dndy.model.PageData;
 
 import java.util.List;
 
 /**
- * 视频和演员dao
+ * 视频和国家dao
  */
 public interface IVideoInCountryDao {
     /**
-     * 添加视频和演员
+     * 添加视频和国家
      */
-    Integer addVideoInCountry(MVideoInCountry pd);
+    Integer addVideoInCountry(PageData pd);
 
     /**
-     * 编辑视频和演员
+     * 编辑视频和国家
      */
-    Integer modifyVideoInCountry(MVideoInCountry pd);
+    Integer modifyVideoInCountry(PageData pd);
 
     /**
-     * 查询单个视频和演员
+     * 查询单个视频和国家
      */
-    MVideoInCountry getVideoInCountry(MVideoInCountry pd);
+    PageData getVideoInCountry(PageData pd);
 
     /**
-     * 查询多个视频和演员
+     * 查询多个视频和国家
      */
-    List<MVideoInCountry> getVideoInCountryList(MVideoInCountry pd);
+    List<PageData> getVideoInCountryList(PageData pd);
 }

@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="VideoInCountryMapper">
-    <insert id="addVideoInCountry" parameterType="MVideoInCountry">
+    <insert id="addVideoInCountry" parameterType="PageData">
         insert into
         t_video_in_country
         (id, `videoId`, countryId)
@@ -11,7 +11,7 @@
         (#{id}, #{videoId}, #{countryId}})
     </insert>
 
-    <update id="modifyVideoInCountry" parameterType="MVideoInCountry">
+    <update id="modifyVideoInCountry" parameterType="PageData">
         update t_video_in_country
         <trim prefix="set" suffixOverrides=",">
             <if test="videoId !=null ">`videoId` = #{videoId},</if>
@@ -20,11 +20,11 @@
         where id = #{id}
     </update>
 
-    <select id="getVideoInCountry" parameterType="MVideoInCountry" resultType="MVideoInCountry">
+    <select id="getVideoInCountry" parameterType="PageData" resultType="PageData">
         select * from t_video_in_country where id = #{id}
     </select>
 
-    <select id="getVideoInCountryList" parameterType="MVideoInCountry" resultType="MVideoInCountry">
+    <select id="getVideoInCountryList" parameterType="PageData" resultType="PageData">
         select * from t_video_in_country
         where 1 = 1
         <if test="videoId != null" >

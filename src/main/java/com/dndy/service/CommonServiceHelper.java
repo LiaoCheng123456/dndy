@@ -1,6 +1,8 @@
 package com.dndy.service;
 
+import com.dndy.dao.ICountryDao;
 import com.dndy.dao.IRoleDao;
+import com.dndy.dao.ITypeDao;
 import com.dndy.dao.IUserDao;
 import com.dndy.model.PageData;
 import com.dndy.util.LogUtils;
@@ -16,6 +18,12 @@ public class CommonServiceHelper extends BaseService {
 
     @Resource(name = "roleDaoImpl")
     private IRoleDao roleDaoImpl;
+
+    @Resource(name = "countryImpl")
+    private ICountryDao countryDao;
+
+    @Resource(name = "typeImpl")
+    private ITypeDao typeDao;
 
     /**
      * 传入用户id，验证是否是超级管理员
@@ -48,4 +56,21 @@ public class CommonServiceHelper extends BaseService {
         return roleDaoImpl.getRole(role);
     }
 
+    /**
+     * 获取国家信息
+     */
+    public PageData getCountryInfo(Object countryId) {
+        PageData country = new PageData();
+        country.put("id", countryId);
+        return countryDao.getCountry(country);
+    }
+
+    /**
+     * 获取类型信息
+     */
+    public PageData getVideoTypeInfo(Object countryId) {
+        PageData typeInfo = new PageData();
+        typeInfo.put("id", countryId);
+        return typeDao.getType(typeInfo);
+    }
 }
