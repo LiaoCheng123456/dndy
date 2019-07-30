@@ -8,7 +8,7 @@
         t_video_in_country
         (id, `videoId`, countryId)
         values
-        (#{id}, #{videoId}, #{countryId}})
+        (#{id}, #{videoId}, #{countryId})
     </insert>
 
     <update id="modifyVideoInCountry" parameterType="PageData">

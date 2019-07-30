@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="VideoLinkMapper">
-    <insert id="addVideoLink" parameterType="MVideoLink">
+    <insert id="addVideoLink" parameterType="PageData">
         insert into
         t_video_link
         (id, `videoId`, definition, source, `type`, link, addTime)
@@ -11,7 +11,7 @@
         (#{id}, #{videoId}, #{definition}, #{source}, #{type}, #{link}, #{addTime})
     </insert>
 
-    <update id="modifyVideoLink" parameterType="MVideoLink">
+    <update id="modifyVideoLink" parameterType="PageData">
         update t_video_link
         <trim prefix="set" suffixOverrides=",">
             <if test="videoId !=null ">`videoId` = #{videoId},</if>
@@ -23,11 +23,11 @@
         where id = #{id}
     </update>
 
-    <select id="getVideoLink" parameterType="MVideoLink" resultType="MVideoLink">
+    <select id="getVideoLink" parameterType="PageData" resultType="PageData">
         select * from t_video_link where id = #{id}
     </select>
 
-    <select id="getVideoLinkList" parameterType="MVideoLink" resultType="MVideoLink">
+    <select id="getVideoLinkList" parameterType="PageData" resultType="PageData">
         select * from t_video_link
         where 1 = 1
         <if test="id != null" >

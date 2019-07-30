@@ -1,6 +1,6 @@
 package com.dndy.dao;
 
-import com.dndy.model.MImage;
+import com.dndy.model.PageData;
 
 import java.util.List;
 
@@ -11,20 +11,20 @@ public interface IImageDao {
     /**
      * 添加图片
      */
-    Integer addImage(MImage pd);
+    Integer addImage(PageData pd);
 
     /**
      * 编辑图片
      */
-    Integer modifyImage(MImage pd);
+    Integer modifyImage(PageData pd);
 
     /**
      * 查询单个图片
      */
-    MImage getImage(MImage pd);
+    PageData getImage(PageData pd);
 
     /**
      * 查询多个图片
      */
-    List<MImage> getImageList(MImage pd);
+    List<PageData> getImageList(PageData pd);
 }
