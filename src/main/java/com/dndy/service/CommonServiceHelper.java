@@ -101,6 +101,7 @@ public class CommonServiceHelper extends BaseService {
         // 视频介绍内容
         handlingVideoContent(pd, mediaMap);
 
+        // 数据持久化
         dataPersistence(pd);
 
     }
@@ -109,12 +110,18 @@ public class CommonServiceHelper extends BaseService {
      * 统一将添加好的视频相关持久化链接存储到数据库
      */
     public void dataPersistence(PageData pd) {
+        String serverPath = PropertiesUtil.GetValueByKey("paths.properties", "serverPath");
         // 封面图片
         if (pd.get("coverPath") != null) {
             PageData cover = new PageData();
             cover.put("id", this.getLongID());
-            cover.put("url", pd.get("coverPath"));
+            cover.put("videoId", pd.get("id"));
+            cover.put("url", serverPath + "cover/" + pd.get("coverPath"));
             cover.put("type", 0);
+            cover.put("addTime", WSPDate.getCurrentTimestemp());
+
+            // 设置视频封面id
+            pd.put("videoCoverId", cover.get("id"));
             imageDao.addImage(cover);
         }
 
@@ -122,8 +129,10 @@ public class CommonServiceHelper extends BaseService {
         if (pd.get("postersPath1") != null) {
             PageData posters = new PageData();
             posters.put("id", this.getLongID());
-            posters.put("url", pd.get("postersPath1"));
+            posters.put("videoId", pd.get("id"));
+            posters.put("url", serverPath + "posters/" + pd.get("postersPath1"));
             posters.put("type", 1);
+            posters.put("addTime", WSPDate.getCurrentTimestemp());
             imageDao.addImage(posters);
         }
 
@@ -131,8 +140,10 @@ public class CommonServiceHelper extends BaseService {
         if (pd.get("postersPath2") != null) {
             PageData posters = new PageData();
             posters.put("id", this.getLongID());
-            posters.put("url", pd.get("postersPath2"));
+            posters.put("videoId", pd.get("id"));
+            posters.put("url", serverPath + "posters/" + pd.get("postersPath2"));
             posters.put("type", 1);
+            posters.put("addTime", WSPDate.getCurrentTimestemp());
             imageDao.addImage(posters);
         }
 
@@ -140,8 +151,10 @@ public class CommonServiceHelper extends BaseService {
         if (pd.get("postersPath3") != null) {
             PageData posters = new PageData();
             posters.put("id", this.getLongID());
-            posters.put("url", pd.get("postersPath3"));
+            posters.put("videoId", pd.get("id"));
+            posters.put("url", serverPath + "posters/" + pd.get("postersPath3"));
             posters.put("type", 1);
+            posters.put("addTime", WSPDate.getCurrentTimestemp());
             imageDao.addImage(posters);
         }
 
@@ -149,8 +162,10 @@ public class CommonServiceHelper extends BaseService {
         if (pd.get("postersPath4") != null) {
             PageData posters = new PageData();
             posters.put("id", this.getLongID());
-            posters.put("url", pd.get("postersPath4"));
+            posters.put("videoId", pd.get("id"));
+            posters.put("url", serverPath + "posters/" + pd.get("postersPath4"));
             posters.put("type", 1);
+            posters.put("addTime", WSPDate.getCurrentTimestemp());
             imageDao.addImage(posters);
         }
 
@@ -158,8 +173,10 @@ public class CommonServiceHelper extends BaseService {
         if (pd.get("postersPath5") != null) {
             PageData posters = new PageData();
             posters.put("id", this.getLongID());
-            posters.put("url", pd.get("postersPath5"));
+            posters.put("videoId", pd.get("id"));
+            posters.put("url", serverPath + "posters/" + pd.get("postersPath5"));
             posters.put("type", 1);
+            posters.put("addTime", WSPDate.getCurrentTimestemp());
             imageDao.addImage(posters);
         }
 
@@ -167,11 +184,11 @@ public class CommonServiceHelper extends BaseService {
         if (pd.get("videoContentPath") != null) {
             PageData videoLink = new PageData();
             videoLink.put("id", this.getLongID());
-            videoLink.put("videoId", pd.get("videoId"));
+            videoLink.put("videoId", pd.get("id"));
             videoLink.put("definition", pd.get("definition"));
             videoLink.put("source", pd.get("source"));
             videoLink.put("type", pd.get("type"));
-            videoLink.put("link", pd.get("link"));
+            videoLink.put("link", serverPath + "videoContent/" + pd.get("videoContentPath"));
             videoLink.put("addTime", WSPDate.getCurrentTimestemp());
             videoLinkDao.addVideoLink(videoLink);
         }
@@ -193,7 +210,7 @@ public class CommonServiceHelper extends BaseService {
                 String fileName = ParameterUtils.generatorAPPID(multipartFile.getOriginalFilename().split("\\.")[0]);
                 String fileAllName = fileName + "." + multipartFile.getOriginalFilename().split("\\.")[1];
                 if (uploadFile(inputStream, coverPath, fileAllName)) {
-                    pd.put("videoContentPathBody", fileAllName);
+                    pd.put("videoContentPath", fileAllName);
                 }
             }
         }

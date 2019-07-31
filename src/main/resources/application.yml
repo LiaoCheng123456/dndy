@@ -34,7 +34,7 @@ mybatis:
     configuration:
       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 server:
-  port: 8989
+  port: 8888
 
 logging:
   config: classpath:log4j2.xml

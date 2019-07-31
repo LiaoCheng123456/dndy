@@ -6,9 +6,9 @@
     <insert id="addImage" parameterType="PageData">
         insert into
         t_image
-        (id, `url`, `type`, addTime)
+        (id, `url`, `videoId`, `type`, addTime)
         values
-        (#{id}, #{url}, #{type}, #{addTime})
+        (#{id}, #{url},#{videoId}, #{type}, #{addTime})
     </insert>
 
     <update id="modifyImage" parameterType="PageData">
@@ -30,6 +30,10 @@
         where 1 = 1
         <if test="id != null" >
             and id = #{id}
+        </if>
+
+        <if test="videoId != null" >
+            and `videoId` = #{videoId}
         </if>
 
         <if test="type != null" >
