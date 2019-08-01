@@ -86,8 +86,9 @@ public class CommonServiceHelper extends BaseService {
 
     /**
      * 处理pd里面的文件
+     * updateOrInsert 新增还是修改 true 新增 false 修改
      */
-    public void handlingFile(PageData pd, Map<String, MultipartFile> mediaMap) throws IOException {
+    public void handlingFile(PageData pd, Map<String, MultipartFile> mediaMap, boolean updateOrInsert) throws IOException {
         if (pd == null) {
             return;
         }
@@ -102,14 +103,189 @@ public class CommonServiceHelper extends BaseService {
         handlingVideoContent(pd, mediaMap);
 
         // 数据持久化
-        dataPersistence(pd);
+        if (updateOrInsert) {
+            insertDataPersistence(pd);
+        } else {
+            updateDataPersistence(pd);
+        }
 
     }
 
     /**
-     * 统一将添加好的视频相关持久化链接存储到数据库
+     * 编辑数据库中的数据
      */
-    public void dataPersistence(PageData pd) {
+    private void updateDataPersistence(PageData pd) {
+        String serverPath = PropertiesUtil.GetValueByKey("paths.properties", "serverPath");
+        // 封面图片
+        if (pd.get("coverPath") != null) {
+            // 查询原有的图片
+            PageData cover = new PageData();
+            cover.put("videoId", pd.get("id"));
+            cover.put("type", 0);
+            PageData image = imageDao.getImage(cover);
+            if (image != null) {
+                // 删除服务器上原有的图片
+                deleteFile(PropertiesUtil.GetValueByKey("paths.properties", "coverPath"), getImageName(image.get("url").toString()));
+            }
+
+            // 删除数据库中的文件
+            imageDao.deleteImage(cover);
+
+            // 新增新的图片
+            cover.put("id", this.getLongID());
+            cover.put("url", serverPath + "cover/" + pd.get("coverPath"));
+            cover.put("addTime", WSPDate.getCurrentTimestemp());
+
+            pd.put("videoCoverId", cover.get("id"));
+            imageDao.addImage(cover);
+        }
+
+        // 剧照海报图片1
+        if (pd.get("postersPath1") != null) {
+            // 查询原有的图片
+            PageData posters = new PageData();
+            posters.put("videoId", pd.get("id"));
+            posters.put("type", 1);
+            posters.put("sort", 1);
+            PageData image = imageDao.getImage(posters);
+            if (image != null) {
+                // 删除服务器上原有的图片
+                deleteFile(PropertiesUtil.GetValueByKey("paths.properties", "postersPath"), getImageName(image.get("url").toString()));
+            }
+
+            // 删除数据库中的文件
+            imageDao.deleteImage(posters);
+
+            // 新增新的图片
+            posters.put("id", this.getLongID());
+            posters.put("url", serverPath + "posters/" + pd.get("postersPath1"));
+            posters.put("addTime", WSPDate.getCurrentTimestemp());
+            imageDao.addImage(posters);
+        }
+
+        // 剧照海报图片2
+        if (pd.get("postersPath2") != null) {
+            // 查询原有的图片
+            PageData posters = new PageData();
+            posters.put("videoId", pd.get("id"));
+            posters.put("type", 1);
+            posters.put("sort", 2);
+            PageData image = imageDao.getImage(posters);
+            if (image != null) {
+                // 删除服务器上原有的图片
+                deleteFile(PropertiesUtil.GetValueByKey("paths.properties", "postersPath"), getImageName(image.get("url").toString()));
+            }
+
+            // 删除数据库中的文件
+            imageDao.deleteImage(posters);
+
+            // 新增新的图片
+            posters.put("id", this.getLongID());
+            posters.put("url", serverPath + "posters/" + pd.get("postersPath2"));
+            posters.put("addTime", WSPDate.getCurrentTimestemp());
+            imageDao.addImage(posters);
+        }
+
+        // 剧照海报图片3
+        if (pd.get("postersPath3") != null) {
+            // 查询原有的图片
+            PageData posters = new PageData();
+            posters.put("videoId", pd.get("id"));
+            posters.put("type", 1);
+            posters.put("sort", 3);
+            PageData image = imageDao.getImage(posters);
+            if (image != null) {
+                // 删除服务器上原有的图片
+                deleteFile(PropertiesUtil.GetValueByKey("paths.properties", "postersPath"), getImageName(image.get("url").toString()));
+            }
+
+            // 删除数据库中的文件
+            imageDao.deleteImage(posters);
+
+            // 新增新的图片
+            posters.put("id", this.getLongID());
+            posters.put("url", serverPath + "posters/" + pd.get("postersPath3"));
+            posters.put("addTime", WSPDate.getCurrentTimestemp());
+            imageDao.addImage(posters);
+        }
+
+        // 剧照海报图片4
+        if (pd.get("postersPath4") != null) {
+            // 查询原有的图片
+            PageData posters = new PageData();
+            posters.put("videoId", pd.get("id"));
+            posters.put("type", 1);
+            posters.put("sort", 4);
+            PageData image = imageDao.getImage(posters);
+            if (image != null) {
+                // 删除服务器上原有的图片
+                deleteFile(PropertiesUtil.GetValueByKey("paths.properties", "postersPath"), getImageName(image.get("url").toString()));
+            }
+
+            // 删除数据库中的文件
+            imageDao.deleteImage(posters);
+
+            // 新增新的图片
+            posters.put("id", this.getLongID());
+            posters.put("url", serverPath + "posters/" + pd.get("postersPath4"));
+            posters.put("addTime", WSPDate.getCurrentTimestemp());
+            imageDao.addImage(posters);
+        }
+
+        // 剧照海报图片5
+        if (pd.get("postersPath5") != null) {
+            // 查询原有的图片
+            PageData posters = new PageData();
+            posters.put("videoId", pd.get("id"));
+            posters.put("type", 1);
+            posters.put("sort", 5);
+            PageData image = imageDao.getImage(posters);
+            if (image != null) {
+                // 删除服务器上原有的图片
+                deleteFile(PropertiesUtil.GetValueByKey("paths.properties", "postersPath"), getImageName(image.get("url").toString()));
+            }
+
+            // 删除数据库中的文件
+            imageDao.deleteImage(posters);
+
+            // 新增新的图片
+            posters.put("id", this.getLongID());
+            posters.put("url", serverPath + "posters/" + pd.get("postersPath5"));
+            posters.put("addTime", WSPDate.getCurrentTimestemp());
+            imageDao.addImage(posters);
+        }
+
+        // 视频介绍内容,只有预告链接有这个
+        if (pd.get("videoContentPath") != null) {
+            PageData videoLink = new PageData();
+            videoLink.put("id", this.getLongID());
+            videoLink.put("videoId", pd.get("id"));
+            videoLink.put("definition", pd.get("definition"));
+            videoLink.put("source", pd.get("source"));
+            videoLink.put("type", pd.get("type"));
+            videoLink.put("link", serverPath + "videoContent/" + pd.get("videoContentPath"));
+            videoLink.put("addTime", WSPDate.getCurrentTimestemp());
+            videoLinkDao.addVideoLink(videoLink);
+        }
+    }
+
+    /**
+     * 获取链接中图片的名字
+     * @param param
+     * @return
+     */
+    private String getImageName(String param) {
+        String[] split = param.split("/");
+        return split[split.length - 1];
+    }
+
+    public static void main(String[] ar) {
+        System.out.println(new CommonServiceHelper().getImageName("http://www.dndy.com/dndystatic/posters/770DB5D40DBF2C07DF20F394B2D1C9F4.jpg"));
+    }
+    /**
+     * 添加到数据库
+     */
+    private void insertDataPersistence(PageData pd) {
         String serverPath = PropertiesUtil.GetValueByKey("paths.properties", "serverPath");
         // 封面图片
         if (pd.get("coverPath") != null) {
@@ -133,6 +309,7 @@ public class CommonServiceHelper extends BaseService {
             posters.put("url", serverPath + "posters/" + pd.get("postersPath1"));
             posters.put("type", 1);
             posters.put("addTime", WSPDate.getCurrentTimestemp());
+            posters.put("sort", 1);
             imageDao.addImage(posters);
         }
 
@@ -144,6 +321,7 @@ public class CommonServiceHelper extends BaseService {
             posters.put("url", serverPath + "posters/" + pd.get("postersPath2"));
             posters.put("type", 1);
             posters.put("addTime", WSPDate.getCurrentTimestemp());
+            posters.put("sort", 2);
             imageDao.addImage(posters);
         }
 
@@ -155,6 +333,7 @@ public class CommonServiceHelper extends BaseService {
             posters.put("url", serverPath + "posters/" + pd.get("postersPath3"));
             posters.put("type", 1);
             posters.put("addTime", WSPDate.getCurrentTimestemp());
+            posters.put("sort", 3);
             imageDao.addImage(posters);
         }
 
@@ -166,6 +345,7 @@ public class CommonServiceHelper extends BaseService {
             posters.put("url", serverPath + "posters/" + pd.get("postersPath4"));
             posters.put("type", 1);
             posters.put("addTime", WSPDate.getCurrentTimestemp());
+            posters.put("sort", 4);
             imageDao.addImage(posters);
         }
 
@@ -177,6 +357,7 @@ public class CommonServiceHelper extends BaseService {
             posters.put("url", serverPath + "posters/" + pd.get("postersPath5"));
             posters.put("type", 1);
             posters.put("addTime", WSPDate.getCurrentTimestemp());
+            posters.put("sort", 5);
             imageDao.addImage(posters);
         }
 

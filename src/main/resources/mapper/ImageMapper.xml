@@ -6,9 +6,9 @@
     <insert id="addImage" parameterType="PageData">
         insert into
         t_image
-        (id, `url`, `videoId`, `type`, addTime)
+        (id, `url`, `videoId`, `type`, addTime, sort)
         values
-        (#{id}, #{url},#{videoId}, #{type}, #{addTime})
+        (#{id}, #{url},#{videoId}, #{type}, #{addTime}, #{sort})
     </insert>
 
     <update id="modifyImage" parameterType="PageData">
@@ -22,7 +22,10 @@
     </update>
 
     <select id="getImage" parameterType="PageData" resultType="PageData">
-        select * from t_image where id = #{id}
+        select * from t_image where videoId = #{videoId} and `type` = #{type}
+         <if test="sort != null">
+             and sort = #{sort}
+         </if>
     </select>
 
     <select id="getImageList" parameterType="PageData" resultType="PageData">
@@ -39,6 +42,13 @@
         <if test="type != null" >
             and `type` = #{type}
         </if>
-        order by addTime desc
+        order by sort
     </select>
+
+    <delete id="deleteImage">
+        delete from t_image where videoId = #{videoId} and `type` = #{type}
+        <if test="sort != null">
+            and sort = #{sort}
+        </if>
+    </delete>
 </mapper>

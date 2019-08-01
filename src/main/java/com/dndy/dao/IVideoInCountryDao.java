@@ -27,4 +27,9 @@ public interface IVideoInCountryDao {
      * 查询多个视频和国家
      */
     List<PageData> getVideoInCountryList(PageData pd);
+
+    /**
+     * 删除单个视频和国家
+     */
+    Integer deleteVideoInCountry(PageData pd);
 }

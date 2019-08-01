@@ -35,4 +35,8 @@
             and `typeId` = #{typeId}
         </if>
     </select>
+
+    <delete id="deleteVideoInType">
+        delete from t_video_in_type where videoId = #{videoId}
+    </delete>
 </mapper>

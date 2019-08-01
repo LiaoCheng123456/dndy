@@ -35,4 +35,8 @@
             and `countryId` = #{countryId}
         </if>
     </select>
+
+    <delete id="deleteVideoInCountry">
+        delete from t_video_in_country where videoId = #{videoId}
+    </delete>
 </mapper>

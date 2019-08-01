@@ -29,4 +29,9 @@ public class ImageImpl extends BaseDao implements IImageDao {
     public List<PageData> getImageList(PageData image) {
         return sqlSessionTemplate.selectList("ImageMapper.getImageList", image);
     }
+
+    @Override
+    public Integer deleteImage(PageData image) {
+        return sqlSessionTemplate.insert("ImageMapper.deleteImage", image);
+    }
 }

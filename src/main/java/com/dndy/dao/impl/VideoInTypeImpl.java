@@ -29,4 +29,9 @@ public class VideoInTypeImpl extends BaseDao implements IVideoInTypeDao {
     public List<PageData> getVideoInTypeList(PageData VideoInType) {
         return sqlSessionTemplate.selectList("VideoInTypeMapper.getVideoInTypeList", VideoInType);
     }
+
+    @Override
+    public Integer deleteVideoInType(PageData VideoInType) {
+        return sqlSessionTemplate.insert("VideoInTypeMapper.deleteVideoInType", VideoInType);
+    }
 }

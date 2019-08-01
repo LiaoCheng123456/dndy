@@ -29,4 +29,9 @@ public class VideoInCountryImpl extends BaseDao implements IVideoInCountryDao {
     public List<PageData> getVideoInCountryList(PageData videoInCountry) {
         return sqlSessionTemplate.selectList("VideoInCountryMapper.getVideoInCountryList", videoInCountry);
     }
+
+    @Override
+    public Integer deleteVideoInCountry(PageData videoInCountry) {
+        return sqlSessionTemplate.delete("VideoInCountryMapper.deleteVideoInCountry", videoInCountry);
+    }
 }

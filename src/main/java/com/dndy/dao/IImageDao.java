@@ -27,4 +27,9 @@ public interface IImageDao {
      * 查询多个图片
      */
     List<PageData> getImageList(PageData pd);
+
+    /**
+     * 删除单张图片
+     */
+    Integer deleteImage(PageData pd);
 }

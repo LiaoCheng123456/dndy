@@ -27,4 +27,9 @@ public interface IVideoInTypeDao {
      * 查询多个视频类型
      */
     List<PageData> getVideoInTypeList(PageData pd);
+
+    /**
+     * 删除单个视频类型
+     */
+    Integer deleteVideoInType(PageData pd);
 }
