@@ -22,7 +22,19 @@
     </update>
 
     <select id="getImage" parameterType="PageData" resultType="PageData">
-        select * from t_image where videoId = #{videoId} and `type` = #{type}
+        select * from t_image where  1 = 1
+
+        <if test="id != null" >
+            and id = #{id}
+        </if>
+
+        <if test="videoId != null" >
+            and `videoId` = #{videoId}
+        </if>
+
+        <if test="type != null" >
+            and `type` = #{type}
+        </if>
          <if test="sort != null">
              and sort = #{sort}
          </if>
@@ -46,9 +58,18 @@
     </select>
 
     <delete id="deleteImage">
-        delete from t_image where videoId = #{videoId} and `type` = #{type}
+        delete from t_image where 1 = 1
+        <if test="videoId != null">
+            and videoId = #{videoId}
+        </if>
+        <if test="type != null">
+            and `type` = #{type}
+        </if>
         <if test="sort != null">
             and sort = #{sort}
+        </if>
+        <if test="id != null">
+            and id = #{id}
         </if>
     </delete>
 </mapper>

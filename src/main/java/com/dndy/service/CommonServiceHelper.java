@@ -5,6 +5,7 @@ import com.dndy.model.PageData;
 import com.dndy.util.LogUtils;
 import com.dndy.util.ParameterUtils;
 import com.dndy.util.PropertiesUtil;
+import com.wsp.core.WSPResult;
 import com.wsp.utils.WSPDate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -271,6 +272,7 @@ public class CommonServiceHelper extends BaseService {
 
     /**
      * 获取链接中图片的名字
+     *
      * @param param
      * @return
      */
@@ -282,6 +284,7 @@ public class CommonServiceHelper extends BaseService {
     public static void main(String[] ar) {
         System.out.println(new CommonServiceHelper().getImageName("http://www.dndy.com/dndystatic/posters/770DB5D40DBF2C07DF20F394B2D1C9F4.jpg"));
     }
+
     /**
      * 添加到数据库
      */
@@ -531,5 +534,37 @@ public class CommonServiceHelper extends BaseService {
             delete_flag = false;
         }
         return delete_flag;
+    }
+
+    /**
+     * 删除图片
+     */
+    public String deleteImage(Object imageId) {
+        if (imageId == null) {
+            return json.toJSONString(new WSPResult("图片不能id为空"));
+        }
+
+        // 获取图片信息
+        PageData img = new PageData();
+        img.put("id", imageId);
+        PageData image = imageDao.getImage(img);
+        if (image == null) {
+            return json.toJSONString(new WSPResult("图片不存在" + imageId));
+        } else {
+            // 获取类型
+            String type = image.get("type").toString();
+            if (type.equals("0")) {
+                // 删除服务器上面的封面图片
+                deleteFile(PropertiesUtil.GetValueByKey("paths.properties", "coverPath"), getImageName(image.get("url").toString()));
+            }
+
+            if (type.equals("1")) {
+                deleteFile(PropertiesUtil.GetValueByKey("paths.properties", "postersPath"), getImageName(image.get("url").toString()));
+            }
+
+            // 删除数据库数据
+            imageDao.deleteImage(img);
+        }
+        return null;
     }
 }

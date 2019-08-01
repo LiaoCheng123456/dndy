@@ -97,7 +97,7 @@ public class VideoController extends BaseController {
                            // 封面图片
                            @RequestParam("id") Long id,
                            // 封面图片
-                           @RequestParam("coverPathBody") MultipartFile coverPath,
+                           @RequestParam(value = "coverPathBody", required = false) MultipartFile coverPath,
                            // 剧照海报图1
                            @RequestParam(value = "postersPath1Body", required = false) MultipartFile postersPath1,
                            // 剧照海报图2
@@ -111,17 +111,17 @@ public class VideoController extends BaseController {
                            // 介绍视频
                            @RequestParam(value = "videoContentPathBody", required = false) MultipartFile videoContentPath,
                            // 视频名称
-                           @RequestParam("name") String name,
+                           @RequestParam(value = "name", required = false) String name,
                            // 上映时间
-                           @RequestParam("showTime") String showTime,
+                           @RequestParam(value = "showTime", required = false) String showTime,
                            // 剧情介绍
-                           @RequestParam("scenario") String scenario,
+                           @RequestParam(value = "scenario", required = false) String scenario,
                            // 视频时长
-                           @RequestParam("videoTime") String videoTime,
+                           @RequestParam(value = "videoTime", required = false) String videoTime,
                            // 视频所属类型
-                           @RequestParam("typeId") Long typeId,
+                           @RequestParam(value = "typeId", required = false) Long typeId,
                            // 视频所属国家
-                           @RequestParam("countryId") Long countryId,
+                           @RequestParam(value = "countryId", required = false) Long countryId,
                            // 视频来源
                            @RequestParam(value = "source", required = false) String source,
                            // 视频清晰度
@@ -155,5 +155,14 @@ public class VideoController extends BaseController {
         video.put("addBy", request.getParameter("uid"));
         video.put("mediaMap", mediaMap);
         return videoService.modifyVideo(json.toJSONString(video), mediaMap);
+    }
+
+    /**
+     * 删除图片
+     */
+    @DeleteMapping(value = "deleteImage", headers = "Accept=*/*", produces = "multipart/form-data")
+    public String deleteImage(HttpServletRequest request, @RequestBody String param) {
+        PageData video = json.parseObject(param, PageData.class);
+        return videoService.deleteImage(json.toJSONString(video));
     }
 }

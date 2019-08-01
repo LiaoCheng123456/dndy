@@ -128,7 +128,7 @@ public class VideoService extends BaseService {
             if (paramCheck.get("countryId") != null) {
                 if (commonServiceHelper.getCountryInfo(paramCheck.get("countryId")) == null) {
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                    return LogUtils.error(this.getClass().getSimpleName(), "addVideo", param, "国家不存在", null);
+                    return LogUtils.error(this.getClass().getSimpleName(), "modifyVideo", param, "国家不存在", null);
                 } else {
                     // 删除原有国家关联
                     PageData videoInCountry = new PageData();
@@ -146,7 +146,7 @@ public class VideoService extends BaseService {
             if (paramCheck.get("typeId") != null) {
                 if (commonServiceHelper.getVideoTypeInfo(paramCheck.get("typeId")) == null) {
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                    return LogUtils.error(this.getClass().getSimpleName(), "addVideo", param, "类型不存在", null);
+                    return LogUtils.error(this.getClass().getSimpleName(), "modifyVideo", param, "类型不存在", null);
                 } else {
                     // 删除类型和视频关联
                     PageData videoInType = new PageData();
@@ -169,9 +169,38 @@ public class VideoService extends BaseService {
             videoDao.modifyVideo(paramCheck);
         } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return LogUtils.error(this.getClass().getSimpleName(), "addVideo", param, "添加视频失败", e);
+            return LogUtils.error(this.getClass().getSimpleName(), "modifyVideo", param, "编辑视频失败", e);
         }
         return json.toJSONString(dataResult);
     }
 
+    /**
+     * 删除图片
+     * @param param
+     * @return
+     */
+    @Transactional
+    public String deleteImage(String param) {
+        WSPResult dataResult = new WSPResult();
+        PageData pd = json.parseObject(param, PageData.class);
+        LogUtils.info(this.getClass().getSimpleName(), "deleteImage", param, "删除图片信息");
+
+        // 检查不为空的参数
+        String s = ParameterUtils.checkParam(pd, "id");
+        if (s != null) {
+            return s;
+        }
+
+        try {
+            // 查询视频下面有没有该图片, 检查视频是否和图片是否存在
+            String id = commonServiceHelper.deleteImage(pd.get("id"));
+            if (id != null) {
+                return id;
+            }
+        } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return LogUtils.error(this.getClass().getSimpleName(), "deleteImage", param, "删除图片失败", e);
+        }
+        return json.toJSONString(dataResult);
+    }
 }
