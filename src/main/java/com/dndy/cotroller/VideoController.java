@@ -160,9 +160,19 @@ public class VideoController extends BaseController {
     /**
      * 删除图片
      */
-    @DeleteMapping(value = "deleteImage", headers = "Accept=*/*", produces = "multipart/form-data")
+    @DeleteMapping(value = "deleteImage", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
     public String deleteImage(HttpServletRequest request, @RequestBody String param) {
         PageData video = json.parseObject(param, PageData.class);
         return videoService.deleteImage(json.toJSONString(video));
+    }
+
+    /**
+     * 获取视频详情
+     */
+    @GetMapping(value = "getVideo/{id}", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
+    public String getVideo(HttpServletRequest request, @PathVariable(value = "id") Long id) {
+        PageData video = new PageData();
+        video.put("id", id);
+        return videoService.getVideo(json.toJSONString(video));
     }
 }

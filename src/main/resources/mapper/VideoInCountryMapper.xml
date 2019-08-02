@@ -21,7 +21,15 @@
     </update>
 
     <select id="getVideoInCountry" parameterType="PageData" resultType="PageData">
-        select * from t_video_in_country where id = #{id}
+        select * from t_video_in_country where
+        1 = 1
+        <if test="videoId != null" >
+            and videoId = #{videoId}
+        </if>
+
+        <if test="countryId != null" >
+            and `countryId` = #{countryId}
+        </if>
     </select>
 
     <select id="getVideoInCountryList" parameterType="PageData" resultType="PageData">

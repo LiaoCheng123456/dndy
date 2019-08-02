@@ -13,7 +13,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service(value = "commonServiceHelper")
 public class CommonServiceHelper extends BaseService {
@@ -35,6 +38,12 @@ public class CommonServiceHelper extends BaseService {
 
     @Resource(name = "imageImpl")
     private IImageDao imageDao;
+
+    @Resource(name = "videoInCountryImpl")
+    private IVideoInCountryDao videoInCountryDao;
+
+    @Resource(name = "videoInTypeImpl")
+    private IVideoInTypeDao videoInTypeDao;
 
     /**
      * 传入用户id，验证是否是超级管理员
@@ -566,5 +575,82 @@ public class CommonServiceHelper extends BaseService {
             imageDao.deleteImage(img);
         }
         return null;
+    }
+
+    /**
+     * 转换视频详情信息
+     * @param video
+     */
+    public void parseVideoInfo(PageData video) {
+        // 转换封面图片信息
+        setImageInfo(video);
+
+        // 转换剧照图片信息
+        setPostersInfo(video);
+
+        // 转换国家
+        setCountryInfo(video);
+
+        // 转换类型
+        setTypeInfo(video);
+    }
+
+    /**
+     * 获取封面图片信息
+     */
+    private void setImageInfo(PageData video) {
+        PageData videoCover = new PageData();
+        videoCover.put("id", video.get("videoCoverId"));
+        PageData image = imageDao.getImage(videoCover);
+        if (image != null) {
+            video.put("videoCover", image);
+        }
+    }
+
+    /**
+     * 获取剧照图片信息
+     */
+    private void setPostersInfo(PageData video) {
+        Long videoId = Long.parseLong(video.get("id").toString());
+
+        // 获取关联数据为剧照类型的图片
+        PageData posters = new PageData();
+        posters.put("videoId", videoId);
+        posters.put("type", 1);
+        List<PageData> imageList = imageDao.getImageList(posters);
+        video.put("postersList", imageList);
+    }
+
+    /**
+     * 查询国家信息
+     */
+    private void setCountryInfo(PageData video) {
+        Long videoId = Long.parseLong(video.get("id").toString());
+        PageData country = new PageData();
+        country.put("videoId", videoId);
+        PageData videoInCountry = videoInCountryDao.getVideoInCountry(country);
+        if (videoInCountry != null) {
+            // 获取国家信息
+            PageData countryInfo = new PageData();
+            countryInfo.put("id", videoInCountry.get("countryId"));
+            video.put("country", countryDao.getCountry(countryInfo));
+        }
+    }
+
+    /**
+     * 查询所属类型
+     */
+    private void setTypeInfo(PageData video) {
+        Long videoId = Long.parseLong(video.get("id").toString());
+        PageData type = new PageData();
+        type.put("videoId", videoId);
+        List<PageData> videoTypeList = new ArrayList<>();
+        List<PageData> videoInTypeList = videoInTypeDao.getVideoInTypeList(type);
+        for (PageData item : videoInTypeList) {
+            PageData typeInfo = new PageData();
+            typeInfo.put("id", item.get("typeId"));
+            videoTypeList.add(typeDao.getType(typeInfo));
+        }
+        video.put("videoTypeList", videoTypeList);
     }
 }

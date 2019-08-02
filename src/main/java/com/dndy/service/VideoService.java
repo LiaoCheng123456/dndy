@@ -203,4 +203,34 @@ public class VideoService extends BaseService {
         }
         return json.toJSONString(dataResult);
     }
+
+    /**
+     * 获取视频详情
+     * @param param
+     * @return
+     */
+    public String getVideo(String param) {
+        WSPResult dataResult = new WSPResult();
+        PageData pd = json.parseObject(param, PageData.class);
+        LogUtils.info(this.getClass().getSimpleName(), "getVideo", param, "获取视频详情信息");
+
+        // 检查不为空的参数
+        String s = ParameterUtils.checkParam(pd, "id");
+        if (s != null) {
+            return s;
+        }
+
+        try {
+            PageData video = videoDao.getVideo(pd);
+            if (video == null) {
+                return LogUtils.error(this.getClass().getSimpleName(), "getVideo", param, "视频信息不存在", null);
+            }
+
+            commonServiceHelper.parseVideoInfo(video);
+            dataResult.setData(video);
+        } catch (Exception e) {
+            return LogUtils.error(this.getClass().getSimpleName(), "getVideo", param, "获取视频详情失败", e);
+        }
+        return json.toJSONString(dataResult);
+    }
 }
