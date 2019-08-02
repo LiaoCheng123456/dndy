@@ -175,4 +175,23 @@ public class VideoController extends BaseController {
         video.put("id", id);
         return videoService.getVideo(json.toJSONString(video));
     }
+
+    /**
+     * 获取视频列表
+     */
+    @GetMapping(value = "getVideoList", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
+    public String getVideo(HttpServletRequest request,
+                           @RequestParam(value = "page", required = false) Long page,
+                           @RequestParam(value = "limit", required = false) Long limit,
+                           @RequestParam(value = "keyword", required = false) String keyword,
+                           @RequestParam(value = "startTime", required = false) Long startTime,
+                           @RequestParam(value = "endTime", required = false) Long endTime) {
+        PageData video = new PageData();
+        video.put("page", page);
+        video.put("limit", limit);
+        video.put("keyword", keyword);
+        video.put("startTime", startTime);
+        video.put("endTime", endTime);
+        return videoService.getVideoList(json.toJSONString(video));
+    }
 }

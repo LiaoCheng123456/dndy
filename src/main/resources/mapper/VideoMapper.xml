@@ -41,10 +41,16 @@
         <if test="id != null" >
             and id = #{id}
         </if>
-
-        <if test="name != null" >
-            and `name` = #{name}
+        <if test="keyword != null">
+            and (`name` like "%"#{keyword}"%" or phone like "%"#{keyword}"%")
+        </if>
+        <if test="startTime != null">
+            and addTime &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            and addTime &lt;= #{endTime}
         </if>
         order by addTime desc
+        <if test="start != null and limit != null"> limit #{start}, #{limit}</if>
     </select>
 </mapper>

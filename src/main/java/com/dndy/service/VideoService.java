@@ -1,13 +1,9 @@
 package com.dndy.service;
-
-import com.dndy.dao.ICountryDao;
 import com.dndy.dao.IVideoDao;
 import com.dndy.dao.IVideoInCountryDao;
 import com.dndy.dao.IVideoInTypeDao;
-import com.dndy.model.DataResult;
-import com.dndy.model.MVideo;
 import com.dndy.model.PageData;
-import com.dndy.service.BaseService;
+import com.dndy.model.ResultPageModel;
 import com.dndy.util.LogUtils;
 import com.dndy.util.ParameterUtils;
 import com.wsp.core.WSPResult;
@@ -18,6 +14,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 @Service(value = "videoService")
@@ -230,6 +227,33 @@ public class VideoService extends BaseService {
             dataResult.setData(video);
         } catch (Exception e) {
             return LogUtils.error(this.getClass().getSimpleName(), "getVideo", param, "获取视频详情失败", e);
+        }
+        return json.toJSONString(dataResult);
+    }
+
+    public String getVideoList(String param) {
+        WSPResult dataResult = new WSPResult();
+        PageData pd = json.parseObject(param, PageData.class);
+        LogUtils.info(this.getClass().getSimpleName(), "getVideoList", param, "获取视频列表信息");
+
+        try {
+            // 添加分页信息
+            ParameterUtils.addPageInfo(pd);
+            List<PageData> videoList = videoDao.getVideoList(pd);
+
+            for (int i = 0; i < videoList.size(); i++) {
+                commonServiceHelper.parseVideoInfo(videoList.get(i));
+            }
+
+            ParameterUtils.removePageInfo(pd);
+            List<PageData> videoSize = videoDao.getVideoList(pd);
+            // 结果
+            ResultPageModel re = new ResultPageModel();
+            re.setTotalResult(videoList);
+            re.setTotalSize(videoSize.size());
+            dataResult.setData(re);
+        } catch (Exception e) {
+            return LogUtils.error(this.getClass().getSimpleName(), "getVideoList", param, "获取视频列表失败", e);
         }
         return json.toJSONString(dataResult);
     }
