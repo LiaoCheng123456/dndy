@@ -24,7 +24,14 @@
     </update>
 
     <select id="getVideoLink" parameterType="PageData" resultType="PageData">
-        select * from t_video_link where id = #{id}
+        select * from t_video_link where
+        1 = 1
+         <if test="id != null">
+             and id = #{id}
+         </if>
+        <if test="videoId != null">
+            and videoId = #{videoId}
+        </if>
     </select>
 
     <select id="getVideoLinkList" parameterType="PageData" resultType="PageData">
@@ -43,4 +50,8 @@
         </if>
         order by addTime desc
     </select>
+
+    <delete id="deleteVideoLink" parameterType="PageData">
+        delete from t_video_link where videoId = #{videoId} and id = #{id}
+    </delete>
 </mapper>

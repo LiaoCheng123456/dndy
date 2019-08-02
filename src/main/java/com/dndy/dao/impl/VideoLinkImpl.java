@@ -29,4 +29,9 @@ public class VideoLinkImpl extends BaseDao implements IVideoLinkDao {
     public List<PageData> getVideoLinkList(PageData videoLink) {
         return sqlSessionTemplate.selectList("VideoLinkMapper.getVideoLinkList", videoLink);
     }
+
+    @Override
+    public Integer deleteVideoLink(PageData pd) {
+        return sqlSessionTemplate.delete("VideoLinkMapper.deleteVideoLink", pd);
+    }
 }

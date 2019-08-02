@@ -27,4 +27,9 @@ public interface IVideoLinkDao {
      * 查询多个视频链接
      */
     List<PageData> getVideoLinkList(PageData pd);
+
+    /**
+     * 删除链接
+     */
+    Integer deleteVideoLink(PageData pd);
 }

@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -285,7 +286,7 @@ public class CommonServiceHelper extends BaseService {
      * @param param
      * @return
      */
-    private String getImageName(String param) {
+    public String getImageName(String param) {
         String[] split = param.split("/");
         return split[split.length - 1];
     }
@@ -389,6 +390,7 @@ public class CommonServiceHelper extends BaseService {
 
     /**
      * 处理视频内容
+     * 只有预告片会存入，其他链接不存入
      *
      * @param pd
      */
@@ -579,6 +581,7 @@ public class CommonServiceHelper extends BaseService {
 
     /**
      * 转换视频详情信息
+     *
      * @param video
      */
     public void parseVideoInfo(PageData video) {
@@ -593,6 +596,9 @@ public class CommonServiceHelper extends BaseService {
 
         // 转换类型
         setTypeInfo(video);
+
+        // 视频链接
+        setVideoLink(video);
     }
 
     /**
@@ -652,5 +658,51 @@ public class CommonServiceHelper extends BaseService {
             videoTypeList.add(typeDao.getType(typeInfo));
         }
         video.put("videoTypeList", videoTypeList);
+    }
+
+    /**
+     * 视频链接
+     */
+    private void setVideoLink(PageData video) {
+        Long videoId = Long.parseLong(video.get("id").toString());
+        PageData type = new PageData();
+        type.put("videoId", videoId);
+
+        HashMap map = new HashMap();
+
+        // 种子列表
+        List<PageData> seedLink = new ArrayList<>();
+
+        // 在线播放链接
+        List<PageData> onLinePlayLink = new ArrayList<>();
+
+        // 预告链接
+        List<PageData> foreshowLink = new ArrayList<>();
+        List<PageData> videoLinkList = videoLinkDao.getVideoLinkList(type);
+        for (int i = 0; i < videoLinkList.size(); i++) {
+            // 按照不同的类型放在不同的列表里面
+
+            // 种子
+            if (videoLinkList.get(i).get("type").toString().equals("0")) {
+                seedLink.add(videoLinkList.get(i));
+                continue;
+            }
+
+            // 在线播放
+            if (videoLinkList.get(i).get("type").toString().equals("1")) {
+                onLinePlayLink.add(videoLinkList.get(i));
+                continue;
+            }
+
+            // 预告
+            if (videoLinkList.get(i).get("type").toString().equals("2")) {
+                foreshowLink.add(videoLinkList.get(i));
+            }
+        }
+
+        map.put("seedLink", seedLink);
+        map.put("onLinePlayLink", onLinePlayLink);
+        map.put("foreshowLink", foreshowLink);
+        video.put("linkList", map);
     }
 }

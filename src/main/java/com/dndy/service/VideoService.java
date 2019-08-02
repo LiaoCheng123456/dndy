@@ -2,10 +2,12 @@ package com.dndy.service;
 import com.dndy.dao.IVideoDao;
 import com.dndy.dao.IVideoInCountryDao;
 import com.dndy.dao.IVideoInTypeDao;
+import com.dndy.dao.IVideoLinkDao;
 import com.dndy.model.PageData;
 import com.dndy.model.ResultPageModel;
 import com.dndy.util.LogUtils;
 import com.dndy.util.ParameterUtils;
+import com.dndy.util.PropertiesUtil;
 import com.wsp.core.WSPResult;
 import com.wsp.utils.WSPDate;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,9 @@ public class VideoService extends BaseService {
 
     @Resource(name = "videoInCountryImpl")
     private IVideoInCountryDao videoInCountryDao;
+
+    @Resource(name = "videoLinkImpl")
+    private IVideoLinkDao videoLinkDao;
 
     /**
      * 添加视频
@@ -254,6 +259,47 @@ public class VideoService extends BaseService {
             dataResult.setData(re);
         } catch (Exception e) {
             return LogUtils.error(this.getClass().getSimpleName(), "getVideoList", param, "获取视频列表失败", e);
+        }
+        return json.toJSONString(dataResult);
+    }
+
+    /**
+     * 删除链接
+     * @param param
+     * @return
+     */
+    @Transactional
+    public String deleteLink(String param) {
+        WSPResult dataResult = new WSPResult();
+        PageData pd = json.parseObject(param, PageData.class);
+        LogUtils.info(this.getClass().getSimpleName(), "deleteLink", param, "删除链接信息");
+
+        // 检查不为空的参数
+        String s = ParameterUtils.checkParam(pd, "id", "videoId");
+        if (s != null) {
+            return s;
+        }
+
+        try {
+            // 查询链接是什么类型的
+            PageData link = new PageData();
+            link.put("id", pd.get("id"));
+            PageData videoLink = videoLinkDao.getVideoLink(link);
+            if (videoLink == null) {
+                return LogUtils.error(this.getClass().getSimpleName(), "deleteLink", param, "链接不存在", null);
+            }
+
+            // 删除视频下面的链接
+            videoLinkDao.deleteVideoLink(pd);
+
+            // 删除服务器上面的文件
+            if (videoLink.get("type").toString().equals("2")) {
+                commonServiceHelper.deleteFile(PropertiesUtil.GetValueByKey("paths.properties", "videoContentPath"),
+                        commonServiceHelper.getImageName(videoLink.get("link").toString()));
+            }
+        } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return LogUtils.error(this.getClass().getSimpleName(), "deleteLink", param, "删除链接失败", e);
         }
         return json.toJSONString(dataResult);
     }

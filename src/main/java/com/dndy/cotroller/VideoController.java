@@ -194,4 +194,13 @@ public class VideoController extends BaseController {
         video.put("endTime", endTime);
         return videoService.getVideoList(json.toJSONString(video));
     }
+
+    /**
+     * 删除链接
+     */
+    @DeleteMapping(value = "deleteLink", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
+    public String deleteLink(HttpServletRequest request, @RequestBody String param) {
+        PageData video = json.parseObject(param, PageData.class);
+        return videoService.deleteLink(json.toJSONString(video));
+    }
 }
