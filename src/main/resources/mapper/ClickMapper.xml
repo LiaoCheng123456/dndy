@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="ClickMapper">
-    <insert id="addClick" parameterType="MClick">
+    <insert id="addClick" parameterType="PageData">
         insert into
         t_click
         (id, `clickTime`, videoId)
@@ -11,7 +11,7 @@
         (#{id}, #{clickTime}, #{videoId})
     </insert>
 
-    <update id="modifyClick" parameterType="MClick">
+    <update id="modifyClick" parameterType="PageData">
         update t_click
         <trim prefix="set" suffixOverrides=",">
             <if test="clickTime !=null ">`clickTime` = #{clickTime},</if>
@@ -20,11 +20,11 @@
         where id = #{id}
     </update>
 
-    <select id="getClick" parameterType="MClick" resultType="MClick">
+    <select id="getClick" parameterType="PageData" resultType="PageData">
         select * from t_click where id = #{id}
     </select>
 
-    <select id="getClickList" parameterType="MClick" resultType="MClick">
+    <select id="getClickList" parameterType="PageData" resultType="PageData">
         select * from t_click
         where 1 = 1
         <if test="id != null" >

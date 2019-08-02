@@ -2,7 +2,7 @@ package com.dndy.dao.impl;
 
 import com.dndy.dao.BaseDao;
 import com.dndy.dao.IClickDao;
-import com.dndy.model.MClick;
+import com.dndy.model.PageData;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,22 +11,22 @@ import java.util.List;
 public class ClickImpl extends BaseDao implements IClickDao {
 
     @Override
-    public Integer addClick(MClick click) {
+    public Integer addClick(PageData click) {
         return sqlSessionTemplate.insert("ClickMapper.addClick", click);
     }
 
     @Override
-    public Integer modifyClick(MClick click) {
+    public Integer modifyClick(PageData click) {
         return sqlSessionTemplate.update("ClickMapper.modifyClick", click);
     }
 
     @Override
-    public MClick getClick(MClick click) {
-        return sqlSessionTemplate.selectOne("ActorMapper.getClick", click);
+    public PageData getClick(PageData click) {
+        return sqlSessionTemplate.selectOne("ClickMapper.getClick", click);
     }
 
     @Override
-    public List<MClick> getClickList(MClick click) {
-        return sqlSessionTemplate.selectList("ActorMapper.getClickList", click);
+    public List<PageData> getClickList(PageData click) {
+        return sqlSessionTemplate.selectList("ClickMapper.getClickList", click);
     }
 }

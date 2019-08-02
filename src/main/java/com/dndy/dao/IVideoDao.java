@@ -27,4 +27,6 @@ public interface IVideoDao {
      * 查询多个视频
      */
     List<PageData> getVideoList(PageData pd);
+
+    List<PageData> getVideoListByClickNumberDesc(PageData pd);
 }

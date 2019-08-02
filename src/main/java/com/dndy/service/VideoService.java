@@ -1,8 +1,5 @@
 package com.dndy.service;
-import com.dndy.dao.IVideoDao;
-import com.dndy.dao.IVideoInCountryDao;
-import com.dndy.dao.IVideoInTypeDao;
-import com.dndy.dao.IVideoLinkDao;
+import com.dndy.dao.*;
 import com.dndy.model.PageData;
 import com.dndy.model.ResultPageModel;
 import com.dndy.util.LogUtils;
@@ -36,6 +33,9 @@ public class VideoService extends BaseService {
 
     @Resource(name = "videoLinkImpl")
     private IVideoLinkDao videoLinkDao;
+
+    @Resource(name = "clickImpl")
+    private IClickDao clickDao;
 
     /**
      * 添加视频
@@ -211,6 +211,7 @@ public class VideoService extends BaseService {
      * @param param
      * @return
      */
+    @Transactional
     public String getVideo(String param) {
         WSPResult dataResult = new WSPResult();
         PageData pd = json.parseObject(param, PageData.class);
@@ -229,13 +230,28 @@ public class VideoService extends BaseService {
             }
 
             commonServiceHelper.parseVideoInfo(video);
+
+            // 记录点击量
+            PageData click = new PageData();
+            click.put("id", this.getLongID());
+            click.put("videoId", pd.get("id"));
+            click.put("clickTime", WSPDate.getCurrentTimestemp());
+            clickDao.addClick(click);
+
             dataResult.setData(video);
         } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return LogUtils.error(this.getClass().getSimpleName(), "getVideo", param, "获取视频详情失败", e);
         }
         return json.toJSONString(dataResult);
     }
 
+
+    /**
+     * 获取视频列表
+     * @param param
+     * @return
+     */
     public String getVideoList(String param) {
         WSPResult dataResult = new WSPResult();
         PageData pd = json.parseObject(param, PageData.class);
@@ -244,14 +260,14 @@ public class VideoService extends BaseService {
         try {
             // 添加分页信息
             ParameterUtils.addPageInfo(pd);
-            List<PageData> videoList = videoDao.getVideoList(pd);
+            List<PageData> videoList = videoDao.getVideoListByClickNumberDesc(pd);
 
             for (int i = 0; i < videoList.size(); i++) {
                 commonServiceHelper.parseVideoInfo(videoList.get(i));
             }
 
             ParameterUtils.removePageInfo(pd);
-            List<PageData> videoSize = videoDao.getVideoList(pd);
+            List<PageData> videoSize = videoDao.getVideoListByClickNumberDesc(pd);
             // 结果
             ResultPageModel re = new ResultPageModel();
             re.setTotalResult(videoList);

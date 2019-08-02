@@ -29,4 +29,9 @@ public class VideoImpl extends BaseDao implements IVideoDao {
     public List<PageData> getVideoList(PageData video) {
         return sqlSessionTemplate.selectList("VideoMapper.getVideoList", video);
     }
+
+    @Override
+    public List<PageData> getVideoListByClickNumberDesc(PageData video) {
+        return sqlSessionTemplate.selectList("VideoMapper.getVideoListByClickNumberDesc", video);
+    }
 }

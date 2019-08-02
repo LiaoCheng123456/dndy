@@ -1,6 +1,6 @@
 package com.dndy.dao;
 
-import com.dndy.model.MClick;
+import com.dndy.model.PageData;
 
 import java.util.List;
 
@@ -11,20 +11,20 @@ public interface IClickDao {
     /**
      * 添加视频点击
      */
-    Integer addClick(MClick pd);
+    Integer addClick(PageData pd);
 
     /**
      * 编辑视频点击
      */
-    Integer modifyClick(MClick pd);
+    Integer modifyClick(PageData pd);
 
     /**
      * 查询单个视频点击
      */
-    MClick getClick(MClick pd);
+    PageData getClick(PageData pd);
 
     /**
      * 查询多个视频点击
      */
-    List<MClick> getClickList(MClick pd);
+    List<PageData> getClickList(PageData pd);
 }

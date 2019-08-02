@@ -53,4 +53,11 @@
         order by addTime desc
         <if test="start != null and limit != null"> limit #{start}, #{limit}</if>
     </select>
+
+    <select id="getVideoListByClickNumberDesc" parameterType="PageData" resultType="PageData">
+        select count(videoId) as number, t_video.*  from t_click INNER JOIN t_video on t_video.id = t_click.videoId
+        where t_video.isDelete = 0
+        GROUP BY videoId  ORDER BY number desc
+        <if test="start != null and limit != null"> limit #{start}, #{limit}</if>
+    </select>
 </mapper>

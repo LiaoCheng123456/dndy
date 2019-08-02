@@ -46,6 +46,9 @@ public class CommonServiceHelper extends BaseService {
     @Resource(name = "videoInTypeImpl")
     private IVideoInTypeDao videoInTypeDao;
 
+    @Resource(name = "clickImpl")
+    private IClickDao clickDao;
+
     /**
      * 传入用户id，验证是否是超级管理员
      */
@@ -599,6 +602,17 @@ public class CommonServiceHelper extends BaseService {
 
         // 视频链接
         setVideoLink(video);
+
+        // 统计点击量
+        setClickNumber(video);
+    }
+
+    private void setClickNumber(PageData video) {
+        PageData clickNumber = new PageData();
+        clickNumber.put("videoId", video.get("id"));
+        List<PageData> clickList = clickDao.getClickList(clickNumber);
+        video.put("clickNumber", clickList == null ? 0 : clickList.size());
+
     }
 
     /**
