@@ -6,9 +6,9 @@
     <insert id="addVideoLink" parameterType="PageData">
         insert into
         t_video_link
-        (id, `videoId`, definition, source, `type`, link, addTime)
+        (id, `videoId`, definition, source, `type`, link, addTime, remark)
         values
-        (#{id}, #{videoId}, #{definition}, #{source}, #{type}, #{link}, #{addTime})
+        (#{id}, #{videoId}, #{definition}, #{source}, #{type}, #{link}, #{addTime}, #{remark})
     </insert>
 
     <update id="modifyVideoLink" parameterType="PageData">
@@ -19,6 +19,7 @@
             <if test="source !=null ">`source` = #{source},</if>
             <if test="type !=null ">`type` = #{type},</if>
             <if test="link !=null ">`link` = #{link},</if>
+            <if test="remark !=null ">`remark` = #{remark},</if>
         </trim>
         where id = #{id}
     </update>

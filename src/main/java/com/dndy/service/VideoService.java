@@ -303,4 +303,136 @@ public class VideoService extends BaseService {
         }
         return json.toJSONString(dataResult);
     }
+
+    /**
+     * 添加链接
+     * @param param
+     * @return
+     */
+    @Transactional
+    public String addVideoLink(String param) {
+        WSPResult wspResult = new WSPResult();
+        PageData pd = json.parseObject(param, PageData.class);
+        LogUtils.info(this.getClass().getSimpleName(), "addVideoLink", param, "添加链接信息");
+        // 检查不为空的参数
+        String s = ParameterUtils.checkParam(pd, "link", "type", "videoId");
+        if (s != null) {
+            return s;
+        }
+
+        try {
+            // 检查视频是否存在
+            PageData video = new PageData();
+            video.put("id", pd.get("videoId"));
+            PageData videoInfo = videoDao.getVideo(video);
+            if (videoInfo == null) {
+                return LogUtils.error(this.getClass().getSimpleName(), "addVideoLink", param, "视频信息不存在", null);
+            }
+
+            pd.put("id", this.getLongID());
+            pd.put("addTime", WSPDate.getCurrentTimestemp());
+            videoLinkDao.addVideoLink(pd);
+        } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return LogUtils.error(this.getClass().getSimpleName(), "addVideoLink", param, "添加链接失败", e);
+        }
+        return json.toJSONString(wspResult);
+    }
+
+    /**
+     * 修改链接
+     * @param param
+     * @return
+     */
+    @Transactional
+    public String modifyVideoLink(String param) {
+        WSPResult wspResult = new WSPResult();
+        PageData pd = json.parseObject(param, PageData.class);
+        LogUtils.info(this.getClass().getSimpleName(), "modifyVideoLink", param, "编辑链接信息");
+        // 检查不为空的参数
+        String s = ParameterUtils.checkParam(pd, "id", "videoId");
+        if (s != null) {
+            return s;
+        }
+
+        try {
+            // 检查id是否存在
+            PageData link = new PageData();
+            link.put("id", pd.get("id"));
+            PageData videoLink = videoLinkDao.getVideoLink(link);
+            if (videoLink == null) {
+                return LogUtils.error(this.getClass().getSimpleName(), "modifyVideoLink", param, "链接不存在", null);
+            }
+
+            pd.put("addTime", WSPDate.getCurrentTimestemp());
+            videoLinkDao.modifyVideoLink(pd);
+        } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return LogUtils.error(this.getClass().getSimpleName(), "modifyVideoLink", param, "编辑链接失败", e);
+        }
+        return json.toJSONString(wspResult);
+    }
+
+    /**
+     * 获取视频信息
+     * @param param
+     * @return
+     */
+    public String getVideoLinkInfo(String param) {
+        WSPResult wspResult = new WSPResult();
+        PageData pd = json.parseObject(param, PageData.class);
+        LogUtils.info(this.getClass().getSimpleName(), "getVideoLinkInfo", param, "获取链接信息");
+        // 检查不为空的参数
+        String s = ParameterUtils.checkParam(pd, "id");
+        if (s != null) {
+            return s;
+        }
+
+        try {
+            // 检查id是否存在
+            PageData link = new PageData();
+            link.put("id", pd.get("id"));
+            PageData videoLink = videoLinkDao.getVideoLink(link);
+            if (videoLink == null) {
+                return LogUtils.error(this.getClass().getSimpleName(), "getVideoLinkInfo", param, "链接不存在", null);
+            }
+
+            wspResult.setData(videoLink);
+        } catch (Exception e) {
+            return LogUtils.error(this.getClass().getSimpleName(), "getVideoLinkInfo", param, "获取链接信息失败", e);
+        }
+        return json.toJSONString(wspResult);
+    }
+
+    /**
+     * 获取视频信息列表
+     * @param param
+     * @return
+     */
+    public String getVideoLinkList(String param) {
+        WSPResult wspResult = new WSPResult();
+        PageData pd = json.parseObject(param, PageData.class);
+        LogUtils.info(this.getClass().getSimpleName(), "getVideoLinkList", param, "获取视频信息列表");
+        // 检查不为空的参数
+        String s = ParameterUtils.checkParam(pd, "videoId");
+        if (s != null) {
+            return s;
+        }
+
+        try {
+            // 检查视频是否存在
+            PageData video = new PageData();
+            video.put("id", pd.get("videoId"));
+            PageData videoInfo = videoDao.getVideo(video);
+            if (videoInfo == null) {
+                return LogUtils.error(this.getClass().getSimpleName(), "modifyVideoLink", param, "视频信息不存在", null);
+            }
+
+            List<PageData> videoLinkList = videoLinkDao.getVideoLinkList(pd);
+            wspResult.setData(videoLinkList);
+        } catch (Exception e) {
+            return LogUtils.error(this.getClass().getSimpleName(), "getVideoLinkList", param, "获取视频信息列表失败", e);
+        }
+        return json.toJSONString(wspResult);
+    }
 }

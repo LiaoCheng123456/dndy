@@ -203,4 +203,43 @@ public class VideoController extends BaseController {
         PageData video = json.parseObject(param, PageData.class);
         return videoService.deleteLink(json.toJSONString(video));
     }
+
+    /**
+     * 添加链接
+     */
+    @PostMapping(value = "addVideoLink", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
+    public String addVideoLink(HttpServletRequest request, @RequestBody String param) {
+        PageData video = json.parseObject(param, PageData.class);
+        return videoService.addVideoLink(json.toJSONString(video));
+    }
+
+
+    /**
+     * 编辑链接
+     */
+    @PutMapping(value = "modifyVideoLink", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
+    public String modifyVideoLink(HttpServletRequest request, @RequestBody String param) {
+        PageData video = json.parseObject(param, PageData.class);
+        return videoService.modifyVideoLink(json.toJSONString(video));
+    }
+
+    /**
+     * 获取链接信息
+     */
+    @GetMapping(value = "getVideoLinkInfo", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
+    public String getVideoLink(HttpServletRequest request, @RequestParam(value = "id") Long id) {
+        PageData video = new PageData();
+        video.put("id", id);
+        return videoService.getVideoLinkInfo(json.toJSONString(video));
+    }
+
+    /**
+     * 获取列表信息
+     */
+    @GetMapping(value = "getVideoLinkList", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
+    public String getVideoLinkList(HttpServletRequest request, @RequestParam(value = "videoId") Long videoId) {
+        PageData video = new PageData();
+        video.put("videoId", videoId);
+        return videoService.getVideoLinkList(json.toJSONString(video));
+    }
 }
