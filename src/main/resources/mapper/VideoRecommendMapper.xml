@@ -3,15 +3,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="VideoRecommendMapper">
-    <insert id="addVideoRecommend" parameterType="MVideoRecommend">
+    <insert id="addVideoRecommend" parameterType="PageData">
         insert into
         t_video_recommend
-        (id, `videoId`, startTime, endTime)
+        (id, `videoId`, startTime, endTime, addTime)
         values
-        (#{id}, #{videoId}, #{startTime}, #{endTime})
+        (#{id}, #{videoId}, #{startTime}, #{endTime}, #{addTime})
     </insert>
 
-    <update id="modifyVideoRecommend" parameterType="MVideoRecommend">
+    <update id="modifyVideoRecommend" parameterType="PageData">
         update t_video_recommend
         <trim prefix="set" suffixOverrides=",">
             <if test="videoId !=null ">`videoId` = #{videoId},</if>
@@ -21,27 +21,23 @@
         where id = #{id}
     </update>
 
-    <select id="getVideoRecommend" parameterType="MVideoRecommend" resultType="MVideoRecommend">
+    <select id="getVideoRecommend" parameterType="PageData" resultType="PageData">
         select * from t_video_recommend where id = #{id}
     </select>
 
-    <select id="getVideoRecommendList" parameterType="MVideoRecommend" resultType="MVideoRecommend">
+    <select id="getVideoRecommendList" parameterType="PageData" resultType="PageData">
         select * from t_video_recommend
         where 1 = 1
-        <if test="id != null" >
-            and id = #{id}
+        <if test="startTime != null">
+            and startTime &gt;= #{startTime}
         </if>
 
-        <if test="videoId != null" >
-            and `videoId` = #{videoId}
-        </if>
-
-        <if test="startTime != null" >
-            and `startTime` &lt;= #{startTime}
-        </if>
-
-        <if test="endTime != null" >
-            and `endTime` &gt;= #{endTime}
+        <if test="endTime != null">
+            and endTime &lt;= #{endTime}
         </if>
     </select>
+
+    <delete id="deleteVideoRecommend" parameterType="PageData">
+        delete from t_video_recommend where id = #{id}
+    </delete>
 </mapper>

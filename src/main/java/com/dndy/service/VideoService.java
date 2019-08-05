@@ -1,18 +1,22 @@
 package com.dndy.service;
+
 import com.dndy.dao.*;
 import com.dndy.model.PageData;
 import com.dndy.model.ResultPageModel;
 import com.dndy.util.LogUtils;
 import com.dndy.util.ParameterUtils;
 import com.dndy.util.PropertiesUtil;
+import com.wsp.core.WSPCode;
 import com.wsp.core.WSPResult;
 import com.wsp.utils.WSPDate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
+import sun.jvm.hotspot.debugger.Page;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +40,9 @@ public class VideoService extends BaseService {
 
     @Resource(name = "clickImpl")
     private IClickDao clickDao;
+
+    @Resource(name = "VideoRecommendImpl")
+    private IVideoRecommendDao videoRecommendDao;
 
     /**
      * 添加视频
@@ -178,6 +185,7 @@ public class VideoService extends BaseService {
 
     /**
      * 删除图片
+     *
      * @param param
      * @return
      */
@@ -208,6 +216,7 @@ public class VideoService extends BaseService {
 
     /**
      * 获取视频详情
+     *
      * @param param
      * @return
      */
@@ -249,6 +258,7 @@ public class VideoService extends BaseService {
 
     /**
      * 获取视频列表
+     *
      * @param param
      * @return
      */
@@ -281,6 +291,7 @@ public class VideoService extends BaseService {
 
     /**
      * 删除链接
+     *
      * @param param
      * @return
      */
@@ -322,6 +333,7 @@ public class VideoService extends BaseService {
 
     /**
      * 添加链接
+     *
      * @param param
      * @return
      */
@@ -357,6 +369,7 @@ public class VideoService extends BaseService {
 
     /**
      * 修改链接
+     *
      * @param param
      * @return
      */
@@ -391,6 +404,7 @@ public class VideoService extends BaseService {
 
     /**
      * 获取视频信息
+     *
      * @param param
      * @return
      */
@@ -422,6 +436,7 @@ public class VideoService extends BaseService {
 
     /**
      * 获取视频信息列表
+     *
      * @param param
      * @return
      */
@@ -450,5 +465,162 @@ public class VideoService extends BaseService {
             return LogUtils.error(this.getClass().getSimpleName(), "getVideoLinkList", param, "获取视频信息列表失败", e);
         }
         return json.toJSONString(wspResult);
+    }
+
+    /**
+     * 添加视频推荐
+     *
+     * @param param
+     * @return
+     */
+    public String addVideoToRecommend(String param) {
+        WSPResult wspResult = new WSPResult();
+        PageData pd = json.parseObject(param, PageData.class);
+        LogUtils.info(this.getClass().getSimpleName(), "addVideoToRecommend", param, "添加视频推荐信息");
+        // 检查不为空的参数
+        String s = ParameterUtils.checkParam(pd, "videoId", "startTime", "endTime");
+        if (s != null) {
+            return s;
+        }
+
+        try {
+            // 添加数据
+            pd.put("id", this.getLongID());
+            pd.put("addTime", WSPDate.getCurrentTimestemp());
+            videoRecommendDao.addVideoRecommend(pd);
+        } catch (Exception e) {
+            return LogUtils.error(this.getClass().getSimpleName(), "addVideoToRecommend", param, "添加视频推荐失败", e);
+        }
+        return json.toJSONString(wspResult);
+    }
+
+    /**
+     * 获取今日推荐视频列表
+     *
+     * @param param
+     * @return
+     */
+    public String getVideoToRecommend(String param) {
+        WSPResult wspResult = new WSPResult();
+        PageData pd = json.parseObject(param, PageData.class);
+        LogUtils.info(this.getClass().getSimpleName(), "getVideoToRecommend", param, "获取推荐视频列表");
+
+        try {
+            PageData pageData = new PageData();
+            if (pd.get("startTime") != null) {
+                pageData.put("startTime", commonServiceHelper.getTodayStartTime());
+            }
+
+            if (pd.get("endTime") != null) {
+                pageData.put("endTime", commonServiceHelper.getTodayEndTime());
+            }
+
+            List<PageData> videoRecommendList = videoRecommendDao.getVideoRecommendList(pageData);
+
+            // 设置视频信息
+            List<PageData> videoResult = new ArrayList<>();
+            for (int i = 0; i < videoRecommendList.size(); i++) {
+                PageData temp = new PageData();
+                temp.put("id", videoRecommendList.get(i).get("videoId"));
+
+                PageData video = videoDao.getVideo(temp);
+                if (video == null) {
+                    continue;
+                }
+                videoResult.add(video);
+                commonServiceHelper.parseVideoInfo(video);
+            }
+
+            // 推荐视频数量，如果小于最小值就去视频库里面获取
+            int recommendSize = Integer.parseInt(PropertiesUtil.GetValueByKey("paths.properties", "recommendSize"));
+            if (videoResult.size() < recommendSize) {
+                int size = recommendSize - videoResult.size();
+                // 获取视频列表的数据
+                PageData list = new PageData();
+                list.put("page", 0);
+                list.put("limit", size);
+                String videoList = getVideoList(json.toJSONString(list));
+                PageData videoListResult = json.parseObject(videoList, PageData.class);
+
+                // 列表数据
+                if (videoListResult.get("code").toString().equals(WSPCode.SUCCESS)) {
+                    List<PageData> videoListContainer = json.parseArray(json.toJSONString(json.parseObject(json.toJSONString(videoListResult.get("data")), PageData.class).get("totalResult")), PageData.class);
+
+                    // 排重
+                    List<PageData> results = new ArrayList<>();
+                    if (videoResult.size() == 0) {
+                        videoResult = videoListContainer;
+                    } else {
+                        for (int i = 0; i < videoResult.size(); i++) {
+                            for (int j = 0; j < videoListContainer.size(); j++) {
+                                if (!videoListContainer.get(j).get("id").toString().equals(videoResult.get(i).get("id").toString())) {
+                                    results.add(videoListContainer.get(j));
+                                }
+                            }
+                        }
+                        videoResult.addAll(results);
+                    }
+                }
+            }
+            wspResult.setData(videoResult);
+        } catch (Exception e) {
+            return LogUtils.error(this.getClass().getSimpleName(), "getVideoToRecommend", param, "获取推荐视频列表失败", e);
+        }
+        return json.toJSONString(wspResult);
+    }
+
+    /**
+     * 删除推荐视频
+     * @param param
+     * @return
+     */
+    @Transactional
+    public String deleteVideoRecommend(String param) {
+        WSPResult dataResult = new WSPResult();
+        PageData pd = json.parseObject(param, PageData.class);
+        LogUtils.info(this.getClass().getSimpleName(), "deleteVideoRecommend", param, "删除推荐视频");
+
+        // 检查不为空的参数
+        String s = ParameterUtils.checkParam(pd, "id");
+        if (s != null) {
+            return s;
+        }
+
+        try {
+            videoRecommendDao.deleteVideoRecommend(pd);
+        } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return LogUtils.error(this.getClass().getSimpleName(), "deleteVideoRecommend", param, "删除推荐视频失败", e);
+        }
+        return json.toJSONString(dataResult);
+    }
+
+    /**
+     * 修改推荐视频
+     * @param param
+     * @return
+     */
+    public String modifyVideoRecommend(String param) {
+        WSPResult dataResult = new WSPResult();
+        PageData pd = json.parseObject(param, PageData.class);
+        LogUtils.info(this.getClass().getSimpleName(), "modifyVideoRecommend", param, "修改推荐视频");
+
+        // 检查不为空的参数
+        String s = ParameterUtils.checkParam(pd, "id");
+        if (s != null) {
+            return s;
+        }
+
+        try {
+            PageData videoRecommend = videoRecommendDao.getVideoRecommend(pd);
+            if (videoRecommend == null) {
+                return LogUtils.error(this.getClass().getSimpleName(), "modifyVideoRecommend", param, "推荐视频不存在", null);
+            }
+            videoRecommendDao.modifyVideoRecommend(pd);
+        } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return LogUtils.error(this.getClass().getSimpleName(), "modifyVideoRecommend", param, "修改推荐视频失败", e);
+        }
+        return json.toJSONString(dataResult);
     }
 }

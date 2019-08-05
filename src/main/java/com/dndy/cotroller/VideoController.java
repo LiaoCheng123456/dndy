@@ -234,7 +234,7 @@ public class VideoController extends BaseController {
     }
 
     /**
-     * 获取列表信息
+     * 获取链接列表信息
      */
     @GetMapping(value = "getVideoLinkList", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
     public String getVideoLinkList(HttpServletRequest request, @RequestParam(value = "videoId") Long videoId) {
@@ -242,4 +242,42 @@ public class VideoController extends BaseController {
         video.put("videoId", videoId);
         return videoService.getVideoLinkList(json.toJSONString(video));
     }
+
+    /**
+     * 添加视频推荐
+     */
+    @PostMapping(value = "addVideoToRecommend", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
+    public String addVideoToRecommend(HttpServletRequest request, @RequestBody String param) {
+        PageData video = json.parseObject(param, PageData.class);
+        return videoService.addVideoToRecommend(json.toJSONString(video));
+    }
+
+    /**
+     * 获取推荐视频列表
+     */
+    @GetMapping(value = "getVideoToRecommend", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
+    public String getVideoToRecommend(HttpServletRequest request) {
+        PageData video = new PageData(request);
+        return videoService.getVideoToRecommend(json.toJSONString(video));
+    }
+
+    /**
+     * 删除推荐视频
+     */
+    @DeleteMapping(value = "deleteVideoRecommend", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
+    public String deleteVideoRecommend(HttpServletRequest request, @RequestBody String param) {
+        PageData video = json.parseObject(param, PageData.class);
+        return videoService.deleteVideoRecommend(json.toJSONString(video));
+    }
+
+
+    /**
+     * 修改推荐视频
+     */
+    @PutMapping(value = "modifyVideoRecommend", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
+    public String modifyVideoRecommend(HttpServletRequest request, @RequestBody String param) {
+        PageData video = json.parseObject(param, PageData.class);
+        return videoService.modifyVideoRecommend(json.toJSONString(video));
+    }
+
 }

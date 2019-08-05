@@ -13,10 +13,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service(value = "commonServiceHelper")
@@ -292,10 +294,6 @@ public class CommonServiceHelper extends BaseService {
     public String getImageName(String param) {
         String[] split = param.split("/");
         return split[split.length - 1];
-    }
-
-    public static void main(String[] ar) {
-        System.out.println(new CommonServiceHelper().getImageName("http://www.dndy.com/dndystatic/posters/770DB5D40DBF2C07DF20F394B2D1C9F4.jpg"));
     }
 
     /**
@@ -718,5 +716,34 @@ public class CommonServiceHelper extends BaseService {
         map.put("onLinePlayLink", onLinePlayLink);
         map.put("foreshowLink", foreshowLink);
         video.put("linkList", map);
+    }
+
+    /**
+     * 获取当天开始时间戳
+     * @return
+     */
+    public long getTodayStartTime() {
+        long nowTime =System.currentTimeMillis();
+        long todayStartTime = nowTime - (nowTime + TimeZone.getDefault().getRawOffset())% (1000*3600*24);
+        return todayStartTime / 1000;
+    }
+
+    /**
+     * 获取当天结束时间戳
+     * @return
+     * @throws Exception
+     */
+    public static long getTodayEndTime() throws Exception{
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDate nowDate = LocalDate.now();
+        LocalDateTime endTime = LocalDateTime.of(nowDate,LocalTime.MAX);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time2 =dtf.format(endTime);
+        return sdf.parse(time2).getTime() / 1000;
+    }
+
+    public static void main(String[] args) {
+        LocalDate nowDate = LocalDate.now();
+        System.out.println(nowDate);
     }
 }
