@@ -507,11 +507,11 @@ public class VideoService extends BaseService {
 
         try {
             PageData pageData = new PageData();
-            if (pd.get("startTime") != null) {
+            if (pd.get("startTime") == null) {
                 pageData.put("startTime", commonServiceHelper.getTodayStartTime());
             }
 
-            if (pd.get("endTime") != null) {
+            if (pd.get("endTime") == null) {
                 pageData.put("endTime", commonServiceHelper.getTodayEndTime());
             }
 
