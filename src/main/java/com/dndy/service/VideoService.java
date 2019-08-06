@@ -66,6 +66,15 @@ public class VideoService extends BaseService {
             Long id = this.getLongID();
             paramCheck.put("id", id);
 
+            // 检查名字是否重复
+            PageData videoNameIsExists = new PageData();
+            videoNameIsExists.put("name", paramCheck.get("name"));
+            PageData video = videoDao.getVideo(videoNameIsExists);
+            if (video != null) {
+                return LogUtils.error(this.getClass().getSimpleName(), "addVideo", param, "电影已存在", null);
+            }
+
+
             // 国家处理
             if (paramCheck.get("countryId") != null) {
                 if (commonServiceHelper.getCountryInfo(paramCheck.get("countryId")) == null) {
@@ -145,6 +154,14 @@ public class VideoService extends BaseService {
             PageData videoInfo = videoDao.getVideo(video);
             if (videoInfo == null) {
                 LogUtils.error(this.getClass().getSimpleName(), "modifyVideo", param, "视频信息不存在", null);
+            }
+
+            // 检查名字是否重复
+            PageData videoNameIsExists = new PageData();
+            videoNameIsExists.put("name", paramCheck.get("name"));
+            PageData videoName = videoDao.getVideo(videoNameIsExists);
+            if (videoName != null && !videoName.get("id").toString().equals(paramCheck.get("id").toString()) ) {
+                return LogUtils.error(this.getClass().getSimpleName(), "modifyVideo", param, "电影已存在", null);
             }
 
             // 国家处理

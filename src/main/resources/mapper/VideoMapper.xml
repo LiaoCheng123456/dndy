@@ -32,7 +32,13 @@
     </update>
 
     <select id="getVideo" parameterType="PageData" resultType="PageData">
-        select * from t_video where id = #{id}
+        select * from t_video where 1 = 1
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="name != null">
+            and `name` = #{name}
+        </if>
     </select>
 
     <select id="getVideoList" parameterType="PageData" resultType="PageData">
