@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
-import sun.jvm.hotspot.debugger.Page;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -43,6 +42,9 @@ public class VideoService extends BaseService {
 
     @Resource(name = "VideoRecommendImpl")
     private IVideoRecommendDao videoRecommendDao;
+
+    @Resource(name = "videoInActorImpl")
+    private IVideoInActorDao videoInActorDao;
 
     /**
      * 添加视频
@@ -91,6 +93,18 @@ public class VideoService extends BaseService {
                     videoInType.put("videoId", id);
                     videoInType.put("typeId", paramCheck.get("typeId"));
                     videoInTypeDao.addVideoInType(videoInType);
+                }
+            }
+
+            // 演员处理
+            if (paramCheck.get("actorIdList") != null) {
+                List<Long> actorIdList = json.parseArray(paramCheck.get("actorIdList").toString(), Long.class);
+                for (Long item : actorIdList) {
+                    PageData actor = new PageData();
+                    actor.put("id", this.getLongID());
+                    actor.put("videoId", id);
+                    actor.put("actorId", item);
+                    videoInActorDao.addVideoInActor(actor);
                 }
             }
 
@@ -166,6 +180,23 @@ public class VideoService extends BaseService {
                     videoInType.put("id", this.getLongID());
                     videoInType.put("typeId", paramCheck.get("typeId"));
                     videoInTypeDao.addVideoInType(videoInType);
+                }
+            }
+
+            // 演员处理
+            if (paramCheck.get("actorIdList") != null) {
+                List<Long> actorIdList = json.parseArray(json.toJSONString(paramCheck.get("actorIdList")), Long.class);
+
+                // 删除原有演员
+                PageData delActor = new PageData();
+                delActor.put("videoId", paramCheck.get("id"));
+                videoInActorDao.deleteActor(delActor);
+                for (Long item : actorIdList) {
+                    PageData actor = new PageData();
+                    actor.put("id", this.getLongID());
+                    actor.put("videoId", paramCheck.get("id"));
+                    actor.put("actorId", item);
+                    videoInActorDao.addVideoInActor(actor);
                 }
             }
 
@@ -571,6 +602,7 @@ public class VideoService extends BaseService {
 
     /**
      * 删除推荐视频
+     *
      * @param param
      * @return
      */
@@ -597,6 +629,7 @@ public class VideoService extends BaseService {
 
     /**
      * 修改推荐视频
+     *
      * @param param
      * @return
      */
@@ -620,6 +653,40 @@ public class VideoService extends BaseService {
         } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return LogUtils.error(this.getClass().getSimpleName(), "modifyVideoRecommend", param, "修改推荐视频失败", e);
+        }
+        return json.toJSONString(dataResult);
+    }
+
+    /**
+     * 获取视频演员列表
+     * @param param
+     * @return
+     */
+    public String getVideoActorList(String param) {
+        WSPResult dataResult = new WSPResult();
+        PageData pd = json.parseObject(param, PageData.class);
+        LogUtils.info(this.getClass().getSimpleName(), "getVideoActorList", param, "获取视频演员列表");
+
+        // 检查不为空的参数
+        String s = ParameterUtils.checkParam(pd, "id");
+        if (s != null) {
+            return s;
+        }
+
+        try {
+            // 检查视频是否存在
+            PageData video = new PageData();
+            video.put("id", pd.get("id"));
+            PageData videoInfo = videoDao.getVideo(video);
+            if (videoInfo == null) {
+                return LogUtils.error(this.getClass().getSimpleName(), "modifyVideoLink", param, "视频信息不存在", null);
+            }
+
+            commonServiceHelper.setActorInfo(videoInfo);
+            dataResult.setData(videoInfo);
+        } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return LogUtils.error(this.getClass().getSimpleName(), "getVideoActorList", param, "获取视频演员列表失败", e);
         }
         return json.toJSONString(dataResult);
     }

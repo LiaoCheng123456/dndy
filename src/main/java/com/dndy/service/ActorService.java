@@ -1,6 +1,7 @@
 package com.dndy.service;
 
 import com.dndy.dao.IActorDao;
+import com.dndy.dao.IVideoInActorDao;
 import com.dndy.model.PageData;
 import com.dndy.util.LogUtils;
 import com.dndy.util.ParameterUtils;
@@ -19,6 +20,9 @@ public class ActorService extends BaseService{
 
     @Resource(name = "commonServiceHelper")
     private CommonServiceHelper commonServiceHelper;
+
+    @Resource(name = "videoInActorImpl")
+    private IVideoInActorDao videoInActorDao;
 
     /**
      * 添加演员信息
@@ -163,6 +167,31 @@ public class ActorService extends BaseService{
             actorDao.deleteActor(pd);
         } catch (Exception e) {
             return LogUtils.error(this.getClass().getSimpleName(), "deleteActor", param, "删除演员失败", e);
+        }
+        return json.toJSONString(wspResult);
+    }
+
+    /**
+     * 修改视频演员
+     * @param param
+     * @return
+     */
+    public String modifyVideoActor(String param) {
+        WSPResult wspResult = new WSPResult();
+        PageData pd = json.parseObject(param, PageData.class);
+        LogUtils.info(this.getClass().getSimpleName(), "modifyVideoActor", param, "修改视频演员演员");
+
+
+        // 检查不为空的参数
+        String s = ParameterUtils.checkParam(pd, "id");
+        if (s != null) {
+            return s;
+        }
+
+        try {
+            videoInActorDao.modifyVideoInActor(pd);
+        } catch (Exception e) {
+            return LogUtils.error(this.getClass().getSimpleName(), "modifyVideoActor", param, "修改视频演员失败", e);
         }
         return json.toJSONString(wspResult);
     }

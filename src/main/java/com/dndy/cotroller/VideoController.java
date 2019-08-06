@@ -61,7 +61,9 @@ public class VideoController extends BaseController {
                            // 类型 0 种子链接，1 播放链接， 2 预告链接
                            @RequestParam(value = "type", required = false) Integer type,
                            // 链接地址
-                           @RequestParam(value = "link", required = false) String link
+                           @RequestParam(value = "link", required = false) String link,
+                           // 演员列表
+                           @RequestParam(value = "actorIdList", required = false) String actorIdList
                            ) {
         Map<String, MultipartFile> mediaMap = new HashMap<>();
         mediaMap.put("coverPathBody", coverPath);
@@ -85,6 +87,7 @@ public class VideoController extends BaseController {
         video.put("link", link);
         video.put("addBy", request.getParameter("uid"));
         video.put("mediaMap", mediaMap);
+        video.put("actorIdList", actorIdList);
         return videoService.addVideo(json.toJSONString(video), mediaMap);
     }
 
@@ -129,7 +132,9 @@ public class VideoController extends BaseController {
                            // 类型 0 种子链接，1 播放链接， 2 预告链接
                            @RequestParam(value = "type", required = false) Integer type,
                            // 链接地址
-                           @RequestParam(value = "link", required = false) String link
+                           @RequestParam(value = "link", required = false) String link,
+                           // 演员列表
+                           @RequestParam(value = "actorIdList", required = false) String actorIdList
     ) {
         Map<String, MultipartFile> mediaMap = new HashMap<>();
         mediaMap.put("coverPathBody", coverPath);
@@ -154,6 +159,7 @@ public class VideoController extends BaseController {
         video.put("link", link);
         video.put("addBy", request.getParameter("uid"));
         video.put("mediaMap", mediaMap);
+        video.put("actorIdList", actorIdList);
         return videoService.modifyVideo(json.toJSONString(video), mediaMap);
     }
 
@@ -270,7 +276,6 @@ public class VideoController extends BaseController {
         return videoService.deleteVideoRecommend(json.toJSONString(video));
     }
 
-
     /**
      * 修改推荐视频
      */
@@ -280,4 +285,14 @@ public class VideoController extends BaseController {
         return videoService.modifyVideoRecommend(json.toJSONString(video));
     }
 
+
+    /**
+     * 获取视频演员列表
+     */
+    @GetMapping(value = "getVideoActorList", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
+    public String getVideoActorList(HttpServletRequest request, @RequestParam(value = "id") Long id) {
+        PageData video = new PageData();
+        video.put("id", id);
+        return videoService.getVideoActorList(json.toJSONString(video));
+    }
 }

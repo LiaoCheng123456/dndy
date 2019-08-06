@@ -51,6 +51,12 @@ public class CommonServiceHelper extends BaseService {
     @Resource(name = "clickImpl")
     private IClickDao clickDao;
 
+    @Resource(name = "videoInActorImpl")
+    private IVideoInActorDao videoInActorDao;
+
+    @Resource(name = "actorImpl")
+    private IActorDao actorDao;
+
     /**
      * 传入用户id，验证是否是超级管理员
      */
@@ -603,6 +609,29 @@ public class CommonServiceHelper extends BaseService {
 
         // 统计点击量
         setClickNumber(video);
+
+        // 演员信息
+        setActorInfo(video);
+    }
+
+    /**
+     * 设置演员信息
+     *
+     * @param video
+     */
+    public void setActorInfo(PageData video) {
+        PageData actorInfo = new PageData();
+        actorInfo.put("videoId", video.get("id"));
+        List<PageData> videoInActorList = videoInActorDao.getVideoInActorList(actorInfo);
+        List<PageData> actorResultList = new ArrayList<>();
+        for (PageData item : videoInActorList) {
+            // 获取演员信息
+            PageData actor = new PageData();
+            actor.put("id", item.get("actorId"));
+            PageData actorResult = actorDao.getActor(actor);
+            actorResultList.add(actorResult);
+        }
+        video.put("actorList", actorResultList);
     }
 
     private void setClickNumber(PageData video) {
@@ -720,25 +749,27 @@ public class CommonServiceHelper extends BaseService {
 
     /**
      * 获取当天开始时间戳
+     *
      * @return
      */
     public long getTodayStartTime() {
-        long nowTime =System.currentTimeMillis();
-        long todayStartTime = nowTime - (nowTime + TimeZone.getDefault().getRawOffset())% (1000*3600*24);
+        long nowTime = System.currentTimeMillis();
+        long todayStartTime = nowTime - (nowTime + TimeZone.getDefault().getRawOffset()) % (1000 * 3600 * 24);
         return todayStartTime / 1000;
     }
 
     /**
      * 获取当天结束时间戳
+     *
      * @return
      * @throws Exception
      */
-    public static long getTodayEndTime() throws Exception{
+    public static long getTodayEndTime() throws Exception {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDate nowDate = LocalDate.now();
-        LocalDateTime endTime = LocalDateTime.of(nowDate,LocalTime.MAX);
+        LocalDateTime endTime = LocalDateTime.of(nowDate, LocalTime.MAX);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String time2 =dtf.format(endTime);
+        String time2 = dtf.format(endTime);
         return sdf.parse(time2).getTime() / 1000;
     }
 

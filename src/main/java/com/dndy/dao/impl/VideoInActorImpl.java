@@ -2,7 +2,7 @@ package com.dndy.dao.impl;
 
 import com.dndy.dao.BaseDao;
 import com.dndy.dao.IVideoInActorDao;
-import com.dndy.model.MVideoInActor;
+import com.dndy.model.PageData;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,22 +11,27 @@ import java.util.List;
 public class VideoInActorImpl extends BaseDao implements IVideoInActorDao {
 
     @Override
-    public Integer addVideoInActor(MVideoInActor videoInActor) {
+    public Integer addVideoInActor(PageData videoInActor) {
         return sqlSessionTemplate.insert("VideoInActorMapper.addVideoInActor", videoInActor);
     }
 
     @Override
-    public Integer modifyVideoInActor(MVideoInActor videoInActor) {
+    public Integer modifyVideoInActor(PageData videoInActor) {
         return sqlSessionTemplate.update("VideoInActorMapper.modifyVideoInActor", videoInActor);
     }
 
     @Override
-    public MVideoInActor getVideoInActor(MVideoInActor videoInActor) {
+    public PageData getVideoInActor(PageData videoInActor) {
         return sqlSessionTemplate.selectOne("VideoInActorMapper.getVideoInActor", videoInActor);
     }
 
     @Override
-    public List<MVideoInActor> getVideoInActorList(MVideoInActor videoInActor) {
+    public List<PageData> getVideoInActorList(PageData videoInActor) {
         return sqlSessionTemplate.selectList("VideoInActorMapper.getVideoInActorList", videoInActor);
+    }
+
+    @Override
+    public Integer deleteActor(PageData videoInActor) {
+        return sqlSessionTemplate.selectOne("VideoInActorMapper.deleteActor", videoInActor);
     }
 }

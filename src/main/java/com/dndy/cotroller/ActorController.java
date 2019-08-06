@@ -68,4 +68,14 @@ public class ActorController extends BaseController{
         pd.put("id", id);
         return actorService.deleteActor(json.toJSONString(pd));
     }
+
+    /**
+     * modify the video actor
+     */
+    @PutMapping(value = "modifyVideoActor", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
+    @AuthJwt
+    public String modifyVideoActor(HttpServletRequest request, @RequestBody String param) {
+        PageData pd = json.parseObject(param, PageData.class);
+        return actorService.modifyVideoActor(json.toJSONString(pd));
+    }
 }

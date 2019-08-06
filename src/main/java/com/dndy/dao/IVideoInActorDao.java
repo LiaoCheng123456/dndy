@@ -1,6 +1,6 @@
 package com.dndy.dao;
 
-import com.dndy.model.MVideoInActor;
+import com.dndy.model.PageData;
 
 import java.util.List;
 
@@ -11,20 +11,25 @@ public interface IVideoInActorDao {
     /**
      * 添加视频和演员
      */
-    Integer addVideoInActor(MVideoInActor pd);
+    Integer addVideoInActor(PageData pd);
 
     /**
      * 编辑视频和演员
      */
-    Integer modifyVideoInActor(MVideoInActor pd);
+    Integer modifyVideoInActor(PageData pd);
 
     /**
      * 查询单个视频和演员
      */
-    MVideoInActor getVideoInActor(MVideoInActor pd);
+    PageData getVideoInActor(PageData pd);
 
     /**
      * 查询多个视频和演员
      */
-    List<MVideoInActor> getVideoInActorList(MVideoInActor pd);
+    List<PageData> getVideoInActorList(PageData pd);
+
+    /**
+     * 删除演员
+     */
+    Integer deleteActor(PageData delActor);
 }
