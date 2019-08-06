@@ -2,7 +2,7 @@ package com.dndy.dao.impl;
 
 import com.dndy.dao.BaseDao;
 import com.dndy.dao.IActorDao;
-import com.dndy.model.MActor;
+import com.dndy.model.PageData;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,22 +11,27 @@ import java.util.List;
 public class ActorImpl extends BaseDao implements IActorDao {
 
     @Override
-    public Integer addActor(MActor actor) {
+    public Integer addActor(PageData actor) {
         return sqlSessionTemplate.insert("ActorMapper.addActor", actor);
     }
 
     @Override
-    public Integer modifyActor(MActor actor) {
+    public Integer modifyActor(PageData actor) {
         return sqlSessionTemplate.update("ActorMapper.modifyActor", actor);
     }
 
     @Override
-    public MActor getActor(MActor actor) {
+    public PageData getActor(PageData actor) {
         return sqlSessionTemplate.selectOne("ActorMapper.getActor", actor);
     }
 
     @Override
-    public List<MActor> getActorList(MActor actor) {
+    public List<PageData> getActorList(PageData actor) {
         return sqlSessionTemplate.selectList("ActorMapper.getActorList", actor);
+    }
+
+    @Override
+    public Integer deleteActor(PageData actor) {
+        return sqlSessionTemplate.delete("ActorMapper.deleteActor", actor);
     }
 }

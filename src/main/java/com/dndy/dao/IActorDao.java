@@ -1,6 +1,6 @@
 package com.dndy.dao;
 
-import com.dndy.model.MActor;
+import com.dndy.model.PageData;
 
 import java.util.List;
 
@@ -11,20 +11,25 @@ public interface IActorDao {
     /**
      * 添加演员
      */
-    Integer addActor(MActor pd);
+    Integer addActor(PageData pd);
 
     /**
      * 编辑演员
      */
-    Integer modifyActor(MActor pd);
+    Integer modifyActor(PageData pd);
 
     /**
      * 查询单个演员
      */
-    MActor getActor(MActor pd);
+    PageData getActor(PageData pd);
 
     /**
      * 查询多个演员
      */
-    List<MActor> getActorList(MActor pd);
+    List<PageData> getActorList(PageData pd);
+
+    /**
+     * 删除演员
+     */
+    Integer deleteActor(PageData pd);
 }
