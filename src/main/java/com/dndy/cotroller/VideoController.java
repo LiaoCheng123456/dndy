@@ -1,5 +1,6 @@
 package com.dndy.cotroller;
 
+import com.dndy.interceptor.AuthJwt;
 import com.dndy.model.MVideo;
 import com.dndy.model.PageData;
 import com.dndy.service.VideoService;
@@ -27,6 +28,7 @@ public class VideoController extends BaseController {
      * 添加视频
      */
     @PostMapping(value = "addVideo", headers = "Accept=*/*", produces = "multipart/form-data")
+    @AuthJwt
     public String addVideo(HttpServletRequest request,
                            // 封面图片
                            @RequestParam("coverPathBody") MultipartFile coverPath,
@@ -96,6 +98,7 @@ public class VideoController extends BaseController {
      * 编辑视频
      */
     @PostMapping(value = "modifyVideo", headers = "Accept=*/*", produces = "multipart/form-data")
+    @AuthJwt
     public String modifyVideo(HttpServletRequest request,
                            // 封面图片
                            @RequestParam("id") Long id,
@@ -167,6 +170,7 @@ public class VideoController extends BaseController {
      * 删除图片
      */
     @DeleteMapping(value = "deleteImage", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
+    @AuthJwt
     public String deleteImage(HttpServletRequest request, @RequestBody String param) {
         PageData video = json.parseObject(param, PageData.class);
         return videoService.deleteImage(json.toJSONString(video));
@@ -176,6 +180,7 @@ public class VideoController extends BaseController {
      * 获取视频详情
      */
     @GetMapping(value = "getVideo/{id}", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
+    @AuthJwt
     public String getVideo(HttpServletRequest request, @PathVariable(value = "id") Long id) {
         PageData video = new PageData();
         video.put("id", id);
@@ -186,6 +191,7 @@ public class VideoController extends BaseController {
      * 获取视频列表
      */
     @GetMapping(value = "getVideoList", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
+    @AuthJwt
     public String getVideo(HttpServletRequest request,
                            @RequestParam(value = "page", required = false) Long page,
                            @RequestParam(value = "limit", required = false) Long limit,
@@ -205,6 +211,7 @@ public class VideoController extends BaseController {
      * 删除链接
      */
     @DeleteMapping(value = "deleteLink", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
+    @AuthJwt
     public String deleteLink(HttpServletRequest request, @RequestBody String param) {
         PageData video = json.parseObject(param, PageData.class);
         return videoService.deleteLink(json.toJSONString(video));
@@ -214,6 +221,7 @@ public class VideoController extends BaseController {
      * 添加链接
      */
     @PostMapping(value = "addVideoLink", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
+    @AuthJwt
     public String addVideoLink(HttpServletRequest request, @RequestBody String param) {
         PageData video = json.parseObject(param, PageData.class);
         return videoService.addVideoLink(json.toJSONString(video));
@@ -224,6 +232,7 @@ public class VideoController extends BaseController {
      * 编辑链接
      */
     @PutMapping(value = "modifyVideoLink", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
+    @AuthJwt
     public String modifyVideoLink(HttpServletRequest request, @RequestBody String param) {
         PageData video = json.parseObject(param, PageData.class);
         return videoService.modifyVideoLink(json.toJSONString(video));
@@ -233,6 +242,7 @@ public class VideoController extends BaseController {
      * 获取链接信息
      */
     @GetMapping(value = "getVideoLinkInfo", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
+    @AuthJwt
     public String getVideoLink(HttpServletRequest request, @RequestParam(value = "id") Long id) {
         PageData video = new PageData();
         video.put("id", id);
@@ -243,6 +253,7 @@ public class VideoController extends BaseController {
      * 获取链接列表信息
      */
     @GetMapping(value = "getVideoLinkList", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
+    @AuthJwt
     public String getVideoLinkList(HttpServletRequest request, @RequestParam(value = "videoId") Long videoId) {
         PageData video = new PageData();
         video.put("videoId", videoId);
@@ -253,6 +264,7 @@ public class VideoController extends BaseController {
      * 添加视频推荐
      */
     @PostMapping(value = "addVideoToRecommend", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
+    @AuthJwt
     public String addVideoToRecommend(HttpServletRequest request, @RequestBody String param) {
         PageData video = json.parseObject(param, PageData.class);
         return videoService.addVideoToRecommend(json.toJSONString(video));
@@ -262,6 +274,7 @@ public class VideoController extends BaseController {
      * 获取推荐视频列表
      */
     @GetMapping(value = "getVideoToRecommend", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
+    @AuthJwt
     public String getVideoToRecommend(HttpServletRequest request) {
         PageData video = new PageData(request);
         return videoService.getVideoToRecommend(json.toJSONString(video));
@@ -271,6 +284,7 @@ public class VideoController extends BaseController {
      * 删除推荐视频
      */
     @DeleteMapping(value = "deleteVideoRecommend", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
+    @AuthJwt
     public String deleteVideoRecommend(HttpServletRequest request, @RequestBody String param) {
         PageData video = json.parseObject(param, PageData.class);
         return videoService.deleteVideoRecommend(json.toJSONString(video));
@@ -280,6 +294,7 @@ public class VideoController extends BaseController {
      * 修改推荐视频
      */
     @PutMapping(value = "modifyVideoRecommend", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
+    @AuthJwt
     public String modifyVideoRecommend(HttpServletRequest request, @RequestBody String param) {
         PageData video = json.parseObject(param, PageData.class);
         return videoService.modifyVideoRecommend(json.toJSONString(video));
@@ -290,6 +305,7 @@ public class VideoController extends BaseController {
      * 获取视频演员列表
      */
     @GetMapping(value = "getVideoActorList", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
+    @AuthJwt
     public String getVideoActorList(HttpServletRequest request, @RequestParam(value = "id") Long id) {
         PageData video = new PageData();
         video.put("id", id);
