@@ -55,8 +55,9 @@ public class VideoTypeController extends BaseController{
      */
     @GetMapping(value = "getTypeList", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
     @AuthJwt
-    public String getTypeList(HttpServletRequest request) {
+    public String getTypeList(HttpServletRequest request, @RequestParam(value = "name", required = false) String name) {
         PageData pd = new PageData();
+        pd.put("name", name);
         return typeService.getTypeList(json.toJSONString(pd));
     }
 

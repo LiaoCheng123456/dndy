@@ -111,13 +111,6 @@ public class VideoTypeService extends BaseService{
         WSPResult wspResult = new WSPResult();
         PageData pd = json.parseObject(param, PageData.class);
         try{
-//            String result = ParameterUtils.checkParam(pd, "schoolId");
-//            if (result != null) {
-//                return result;
-//            }
-//
-//            PageData school = new PageData();
-//            school.put("schoolId", pd.get("schoolId"));
             List<PageData> TypeBySchool = typeDao.getTypeList(pd);
             wspResult.setData(TypeBySchool);
         } catch (Exception e) {

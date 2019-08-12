@@ -55,8 +55,9 @@ public class CountryController extends BaseController{
      */
     @GetMapping(value = "getCountryList", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
     @AuthJwt
-    public String getCountryList(HttpServletRequest request) {
+    public String getCountryList(HttpServletRequest request, @RequestParam(value = "name", required = false) String name) {
         PageData pd = new PageData();
+        pd.put("name", name);
         return countryService.getCountryList(json.toJSONString(pd));
     }
 
