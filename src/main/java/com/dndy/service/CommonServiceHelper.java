@@ -13,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -504,6 +506,12 @@ public class CommonServiceHelper extends BaseService {
             if (uploadFile(inputStream, coverPath, fileAllName)) {
                 pd.put("coverPath", fileAllName);
             }
+            return;
+        }
+
+        if (pd.get("coverUrl") != null) {
+            String s = downloadPicture(pd.get("coverUrl").toString(), PropertiesUtil.GetValueByKey("paths.properties", "coverPath"));
+            pd.put("coverPath", s);
         }
     }
 
@@ -773,8 +781,42 @@ public class CommonServiceHelper extends BaseService {
         return sdf.parse(time2).getTime() / 1000;
     }
 
+    /**
+     * 通过url下载图片
+     * @param urlList
+     * @param path
+     */
+    private static String downloadPicture(String urlList, String path) {
+        String fileName = "";
+        try {
+            URL url = null;
+            url = new URL(urlList);
+            fileName = UUID.randomUUID().toString() + ".jpg";
+            path = path + fileName;
+            DataInputStream dataInputStream = new DataInputStream(url.openStream());
+            FileOutputStream fileOutputStream = new FileOutputStream(new File(path));
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = dataInputStream.read(buffer)) > 0) {
+                output.write(buffer, 0, length);
+            }
+            fileOutputStream.write(output.toByteArray());
+
+            dataInputStream.close();
+            fileOutputStream.close();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return fileName;
+    }
+
     public static void main(String[] args) {
-        LocalDate nowDate = LocalDate.now();
-        System.out.println(nowDate);
+//        LocalDate nowDate = LocalDate.now();
+//        System.out.println(nowDate);
+
+//        downloadPicture("https://avatar.csdn.net/4/5/9/3_tanzongbiao.jpg", PropertiesUtil.GetValueByKey("paths.properties", "videoContentPath"));
     }
 }

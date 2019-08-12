@@ -30,8 +30,10 @@ public class VideoController extends BaseController {
     @PostMapping(value = "addVideo", headers = "Accept=*/*", produces = "multipart/form-data")
     @AuthJwt
     public String addVideo(HttpServletRequest request,
-                           // 封面图片
-                           @RequestParam("coverPathBody") MultipartFile coverPath,
+                           // 封面图片文件
+                           @RequestParam(value = "coverPathBody", required = false) MultipartFile coverPath,
+                           // 封面图片链接
+                           @RequestParam(value = "coverUrl", required = false) String coverUrl,
                            // 剧照海报图1
                            @RequestParam(value = "postersPath1Body", required = false) MultipartFile postersPath1,
                            // 剧照海报图2
@@ -90,6 +92,7 @@ public class VideoController extends BaseController {
         video.put("addBy", request.getParameter("uid"));
         video.put("mediaMap", mediaMap);
         video.put("actorIdList", actorIdList);
+        video.put("coverUrl", coverUrl);
         return videoService.addVideo(json.toJSONString(video), mediaMap);
     }
 
@@ -197,13 +200,16 @@ public class VideoController extends BaseController {
                            @RequestParam(value = "limit", required = false) Long limit,
                            @RequestParam(value = "keyword", required = false) String keyword,
                            @RequestParam(value = "startTime", required = false) Long startTime,
-                           @RequestParam(value = "endTime", required = false) Long endTime) {
+                           @RequestParam(value = "endTime", required = false) Long endTime,
+                           @RequestParam(value = "type") String type
+                           ) {
         PageData video = new PageData();
         video.put("page", page);
         video.put("limit", limit);
         video.put("keyword", keyword);
         video.put("startTime", startTime);
         video.put("endTime", endTime);
+        video.put("type", type);
         return videoService.getVideoList(json.toJSONString(video));
     }
 

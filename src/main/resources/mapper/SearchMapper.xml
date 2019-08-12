@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SearchMapper">
+    <insert id="addSearch" parameterType="PageData">
+        insert into
+        t_search
+        (id, `name`, addTime)
+        values
+        (#{id}, #{name}, #{addTime})
+    </insert>
+
+    <update id="modifySearch" parameterType="PageData">
+        update t_search
+        <trim prefix="set" suffixOverrides=",">
+            <if test="id !=null ">id = #{id},</if>
+            <if test="name !=null "> `name` = #{name},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="getSearch" parameterType="PageData" resultType="PageData">
+        select *
+        from t_Search
+        where 1 = 1
+        <if test="id != null">
+            and id = #{id}
+        </if>
+    </select>
+
+    <select id="getSearchList" parameterType="PageData" resultType="PageData">
+        select *
+        from t_search
+        where 1 = 1
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="name != null">
+            and `name` = #{name}
+        </if>
+        order by addTime desc
+        <if test="start != null and limit != null"> limit #{start}, #{limit}</if>
+    </select>
+
+    <delete id="deleteSearch" parameterType="PageData">
+        delete from t_search where id = #{id}
+    </delete>
+</mapper>

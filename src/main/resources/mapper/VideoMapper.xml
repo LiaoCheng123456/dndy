@@ -48,7 +48,7 @@
             and id = #{id}
         </if>
         <if test="keyword != null">
-            and (`name` like "%"#{keyword}"%" or phone like "%"#{keyword}"%")
+            and (t_video.`name` like "%"#{keyword}"%" or nameEng like "%"#{keyword}"%")
         </if>
         <if test="startTime != null">
             and addTime &gt;= #{startTime}

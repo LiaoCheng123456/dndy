@@ -1,5 +1,6 @@
 package com.dndy.service;
 
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.dndy.dao.*;
 import com.dndy.model.PageData;
 import com.dndy.model.ResultPageModel;
@@ -45,6 +46,9 @@ public class VideoService extends BaseService {
 
     @Resource(name = "videoInActorImpl")
     private IVideoInActorDao videoInActorDao;
+
+    @Resource(name = "searchImpl")
+    private ISearchDao searchDao;
 
     /**
      * 添加视频
@@ -310,31 +314,91 @@ public class VideoService extends BaseService {
      * @param param
      * @return
      */
+    @Transactional
     public String getVideoList(String param) {
         WSPResult dataResult = new WSPResult();
         PageData pd = json.parseObject(param, PageData.class);
         LogUtils.info(this.getClass().getSimpleName(), "getVideoList", param, "获取视频列表信息");
 
+        // 检查不为空的参数
+        String s = ParameterUtils.checkParam(pd, "type");
+        if (s != null) {
+            return s;
+        }
         try {
-            // 添加分页信息
-            ParameterUtils.addPageInfo(pd);
-            List<PageData> videoList = videoDao.getVideoListByClickNumberDesc(pd);
-
-            for (int i = 0; i < videoList.size(); i++) {
-                commonServiceHelper.parseVideoInfo(videoList.get(i));
+            // 获取推荐视频列表
+            if (pd.get("type").toString().equals("1")) {
+                getRecommendVideoList(dataResult, pd);
             }
 
-            ParameterUtils.removePageInfo(pd);
-            List<PageData> videoSize = videoDao.getVideoListByClickNumberDesc(pd);
-            // 结果
-            ResultPageModel re = new ResultPageModel();
-            re.setTotalResult(videoList);
-            re.setTotalSize(videoSize.size());
-            dataResult.setData(re);
+            // 获取电影列表
+            if (pd.get("type").toString().equals("2")) {
+                getVideoList(dataResult, pd);
+            }
+
         } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return LogUtils.error(this.getClass().getSimpleName(), "getVideoList", param, "获取视频列表失败", e);
         }
-        return json.toJSONString(dataResult);
+        return json.toJSONString(dataResult, SerializerFeature.DisableCircularReferenceDetect);
+    }
+
+    /**
+     * 获取推荐视频列表
+     * @param dataResult
+     * @param pd
+     */
+    private void getVideoList(WSPResult dataResult, PageData pd) {
+        // 添加分页信息
+        ParameterUtils.addPageInfo(pd);
+        List<PageData> videoList = videoDao.getVideoList(pd);
+
+        for (int i = 0; i < videoList.size(); i++) {
+            commonServiceHelper.parseVideoInfo(videoList.get(i));
+        }
+
+        ParameterUtils.removePageInfo(pd);
+        List<PageData> videoSize = videoDao.getVideoList(pd);
+
+
+        // 如果是关键字搜索，并且没有搜索到数据，那么就将这个关键字存入数据库
+        if (pd.get("keyword") != null && videoList.size() == 0) {
+            PageData search = new PageData();
+            search.put("id", this.getLongID());
+            search.put("name", pd.get("keyword"));
+            search.put("addTime", WSPDate.getCurrentTimestemp());
+            searchDao.addSearch(search);
+        }
+
+        // 结果
+        ResultPageModel re = new ResultPageModel();
+        re.setTotalResult(videoList);
+        re.setTotalSize(videoSize.size());
+        dataResult.setData(re);
+    }
+
+    /**
+     * 获取推荐视频列表
+     * @param dataResult
+     * @param pd
+     */
+    private void getRecommendVideoList(WSPResult dataResult, PageData pd) {
+        // 添加分页信息
+        ParameterUtils.addPageInfo(pd);
+        List<PageData> videoList = videoDao.getVideoListByClickNumberDesc(pd);
+
+        for (int i = 0; i < videoList.size(); i++) {
+            commonServiceHelper.parseVideoInfo(videoList.get(i));
+        }
+
+        ParameterUtils.removePageInfo(pd);
+        List<PageData> videoSize = videoDao.getVideoListByClickNumberDesc(pd);
+
+        // 结果
+        ResultPageModel re = new ResultPageModel();
+        re.setTotalResult(videoList);
+        re.setTotalSize(videoSize.size());
+        dataResult.setData(re);
     }
 
     /**
