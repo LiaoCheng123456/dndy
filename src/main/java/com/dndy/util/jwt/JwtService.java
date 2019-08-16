@@ -54,6 +54,10 @@ public class JwtService{
 
             Object object = this.redisUtil.getKey("JWT_" + keyId);
 
+            if (object == null) {
+                return "";
+            }
+
             MLoginRedis mLoginRedis = json.parseObject(json.toJSONString(object),MLoginRedis.class);
 
             if (mLoginRedis.getUuid().equals(claims.getJti())) {

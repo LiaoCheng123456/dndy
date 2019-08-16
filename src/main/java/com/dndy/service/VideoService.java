@@ -128,6 +128,8 @@ public class VideoService extends BaseService {
             paramCheck.put("addTime", WSPDate.getCurrentTimestemp());
             paramCheck.put("updateTime", WSPDate.getCurrentTimestemp());
             videoDao.addVideo(paramCheck);
+
+            dataResult.setData(id);
         } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return LogUtils.error(this.getClass().getSimpleName(), "addVideo", param, "添加视频失败", e);
