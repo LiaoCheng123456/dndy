@@ -22,7 +22,13 @@
     </update>
 
     <select id="getType" parameterType="PageData" resultType="PageData">
-        select * from t_type where id = #{id} and isDelete = 0
+        select * from t_type where isDelete = 0
+        <if test="id != null" >
+            and id = #{id}
+        </if>
+        <if test="name != null" >
+            and `name` = #{name}
+        </if>
     </select>
 
     <select id="getTypeList" parameterType="PageData" resultType="PageData">

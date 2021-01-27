@@ -34,7 +34,9 @@ public class VideoTypeService extends BaseService{
             nameExists.put("name", pd.get("name"));
             PageData TypeBySchool = typeDao.getType(nameExists);
             if (TypeBySchool != null) {
-                return LogUtils.error(this.getClass().getSimpleName(), "addType", param, "视频类型名重复", null);
+                LogUtils.error(this.getClass().getSimpleName(), "addType", param, "视频类型名重复", null);
+                wspResult.setData(TypeBySchool.get("id"));
+                return json.toJSONString(wspResult);
             }
 
             pd.put("id", getLongID());

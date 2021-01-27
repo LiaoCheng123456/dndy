@@ -194,7 +194,7 @@ public class VideoController extends BaseController {
      * 获取视频列表
      */
     @GetMapping(value = "getVideoList", headers = "Accept=*/*", produces = "application/json;charset=UTF-8")
-    @AuthJwt
+//    @AuthJwt
     public String getVideo(HttpServletRequest request,
                            @RequestParam(value = "page", required = false) Long page,
                            @RequestParam(value = "limit", required = false) Long limit,
