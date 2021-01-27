@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 public class BaseController implements Serializable {
 
-	protected Logger logger = LogManager.getLogger();
+	protected static Logger logger = LogManager.getLogger();
 
 	private static final long serialVersionUID = 6357869213649815390L;
 
