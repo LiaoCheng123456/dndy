@@ -14,5 +14,5 @@ public class BaseController implements Serializable {
 
 	private static final long serialVersionUID = 6357869213649815390L;
 
-	protected JSONObject json = new JSONObject();
+	protected static JSONObject json = new JSONObject();
 }
